@@ -1,0 +1,379 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>실제 시험 데이터 | 테크니컬 초등임용 데이터랩</title>
+<meta name="description" content="초등임용 실제 시험 경쟁률·합격선 데이터와 지역별 추이를 확인합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Nanum+Gothic+Coding:wght@400;700&display=swap">
+<link rel="stylesheet" href="common.css">
+<style>
+  :root{
+    color-scheme: light;
+    --ground:#ffffff; --surface:#ffffff; --surface-2:#fafcfb;
+    --ink:#0e1a16; --ink-2:#56655f; --ink-3:#869590;
+    --line:#dde6e2; --line-2:#c3d1cb;
+    --avg:#07e29e; --avg-soft:#07e29e2e; --avg-ink:#05815c;
+    --cut:#44526b; --cut-soft:#44526b1f;
+    --cut2:#b8503f; --cut2-soft:#b8503f1a;
+    --sans:"Nanum Gothic","Apple SD Gothic Neo","Malgun Gothic",-apple-system,sans-serif;
+    --mono:"Nanum Gothic Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+    padding-top: env(safe-area-inset-top,0px);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;max-width:100%;overflow-x:hidden}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; word-break:keep-all; overflow-wrap:break-word;
+  }
+  h1,h2,h3{text-wrap:balance} p{text-wrap:pretty}
+  button,select{-webkit-tap-highlight-color:transparent; touch-action:manipulation; font:inherit}
+
+  .wrap{
+    max-width:1060px; margin:0 auto;
+    padding-left:max(20px, env(safe-area-inset-left));
+    padding-right:max(20px, env(safe-area-inset-right));
+    padding-block:32px calc(56px + env(safe-area-inset-bottom));
+    display:flex; flex-direction:column; gap:22px;
+  }
+
+  .brand{display:flex; align-items:center; gap:12px}
+  .logo{
+    display:grid; place-items:center; width:40px; height:40px; flex:none;
+    border-radius:11px; background:var(--avg); color:#fff;
+    font-family:Georgia,"Times New Roman",serif; font-weight:700; font-style:italic; font-size:17px;
+  }
+  h1{margin:0; font-size:min(26px,5.6vw); font-weight:800; letter-spacing:-0.02em; line-height:1.3}
+  .lede{margin:2px 0 0; max-width:60ch; color:var(--ink-2); font-size:14px}
+
+  nav.tabs{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+    position:sticky; top:0; z-index:5; background:var(--ground);
+    padding-block:6px 2px;
+  }
+  nav.tabs button{
+    border:1px solid var(--line-2); background:var(--surface);
+    color:var(--ink-2); border-radius:12px; padding:12px 6px;
+    font-weight:700; font-size:13.5px; cursor:pointer; text-align:center;
+    transition:background .12s,color .12s,border-color .12s;
+  }
+  nav.tabs button.is-on{background:var(--ink); color:#fff; border-color:var(--ink)}
+  @media (max-width:420px){ nav.tabs button{font-size:12px; padding:11px 4px} }
+
+  section.view{display:none}
+  section.view.is-on{display:flex; flex-direction:column; gap:18px}
+
+  .panel{
+    border:1px solid var(--line); border-radius:14px; padding:16px;
+    background:var(--surface); display:flex; flex-direction:column; gap:14px;
+  }
+  .panel-head h2{margin:0 0 4px; font-size:16px; font-weight:800}
+  .panel-head .note{margin:0; color:var(--ink-3); font-size:12.5px}
+
+  .seg{display:inline-flex; border:1px solid var(--line-2); border-radius:10px; padding:3px; gap:2px}
+  .seg button{
+    border:none; background:none; color:var(--ink-2); font-weight:700; font-size:13px;
+    padding:7px 12px; border-radius:7px; cursor:pointer;
+  }
+  .seg button.is-on{background:var(--ink); color:#fff}
+
+  .row-controls{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+  select.plain{
+    font-family:var(--sans); font-size:13.5px; color:var(--ink); background:var(--surface);
+    border:1px solid var(--line-2); border-radius:8px; padding:8px 28px 8px 10px;
+    appearance:none; -webkit-appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),
+                      linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+    background-position:calc(100% - 15px) 50%, calc(100% - 10px) 50%;
+    background-size:5px 5px, 5px 5px; background-repeat:no-repeat;
+  }
+
+  .bars{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+  .bars li{display:grid; grid-template-columns:52px 1fr 52px; align-items:center; gap:8px}
+  .bars .name{font-size:12.5px; color:var(--ink-2); font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .bars .track{position:relative; height:20px; background:var(--surface-2); border-radius:6px; overflow:hidden}
+  .bars .fill{position:absolute; inset:0 auto 0 0; border-radius:6px; background:var(--avg)}
+  .bars li.is-me .fill{background:var(--cut2)}
+  .bars .val{font-family:var(--mono); font-size:12px; font-weight:700; color:var(--ink); text-align:right; font-variant-numeric:tabular-nums}
+
+  .trend-wrap{display:flex; flex-direction:column; gap:10px}
+  .trend-chart{width:100%; height:auto; display:block}
+  .trend-pts text{font-family:var(--mono); font-variant-numeric:tabular-nums}
+  .legend-inline{display:flex; gap:14px; margin:0; font-size:12px; color:var(--ink-3)}
+  .legend-inline span{display:inline-flex; align-items:center; gap:5px}
+  .legend-inline i{width:9px; height:9px; border-radius:3px; background:var(--avg); display:inline-block}
+  .legend-inline i.i-cut{background:var(--cut)}
+  .legend-inline i.i-cut2{background:var(--cut2)}
+
+  .empty-note{color:var(--ink-3); font-size:13px; padding:10px 2px}
+
+  .mock-frame-wrap{border-radius:14px; overflow:hidden; border:1px solid var(--line)}
+  iframe.mock-frame{width:100%; border:0; display:block; height:1400px; background:#faf9f5}
+
+  .notice{
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:16px;
+    padding:48px 22px; border:1px dashed var(--line-2); border-radius:16px; background:var(--surface-2);
+  }
+  .notice-icon{
+    display:grid; place-items:center; width:52px; height:52px; border-radius:50%;
+    background:var(--avg-soft); color:var(--avg-ink); flex:none;
+  }
+  .notice-icon svg{width:24px; height:24px}
+  .notice-title{margin:0; font-size:17px; font-weight:800; color:var(--ink); max-width:34ch}
+  .notice-sub{margin:0; font-size:13px; color:var(--ink-2); max-width:44ch; line-height:1.7}
+  .notice-badge{
+    font-family:var(--mono); font-size:11.5px; font-weight:700; letter-spacing:.04em;
+    color:var(--avg-ink); background:var(--avg-soft); border-radius:999px; padding:5px 12px;
+  }
+
+  .disclaimer{
+    font-size:12px; color:var(--ink-3); border-top:1px solid var(--line); padding-top:14px;
+  }
+</style></head><body>
+<div class="site-nav-shell"><nav class="site-nav" aria-label="데이터 종류 선택"><a href="real.html" class="is-on">실제 시험 데이터</a><a href="mock.html" class="">모의고사 데이터</a><a href="expected-2027.html" class="">2027 예상</a></nav></div>
+<div class="wrap">
+<header><div class="brand"><span class="logo" aria-hidden="true">t</span><h1>테크니컬 초등임용 데이터랩</h1></div><p class="lede">전략적 임고 완성, 테크니컬</p></header>
+<section class="view is-on" id="view-real" aria-label="실제 시험 데이터">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>지역별 비교</h2>
+        <p class="note" id="real-rank-note"></p>
+      </div>
+      <div class="row-controls">
+        <div class="seg" role="group" aria-label="지표 선택" id="metric-seg">
+          <button type="button" data-metric="rate" class="is-on">경쟁률</button>
+          <button type="button" data-metric="cut1">1차 합격선</button>
+          <button type="button" data-metric="cut2">2차 합격선</button>
+        </div>
+        <select class="plain" id="year-select" aria-label="연도 선택"></select>
+      </div>
+      <ol class="bars" id="real-bars"></ol>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>지역별 추이 <span id="trend-metric-label"></span></h2>
+        <p class="note">선택한 지역의 최근 연도별 변화입니다.</p>
+      </div>
+      <div class="row-controls">
+        <select class="plain" id="region-select" aria-label="지역 선택"></select>
+      </div>
+      <div class="trend-wrap">
+        <svg class="trend-chart" id="trend-chart" viewBox="0 0 640 220" preserveAspectRatio="xMidYMid meet"></svg>
+        <p class="legend-inline">
+          <span><i></i> 선택 지역</span>
+          <span><i class="i-cut2"></i> 전국(총계)</span>
+        </p>
+      </div>
+    </section>
+
+    <p class="disclaimer">경쟁률은 2022~2026학년도, 합격선은 2025~2026학년도 자료를 기준으로 합니다. 지역제한 전형 등 일부 소규모 세부 전형은 표에서 제외했습니다.</p>
+  </section>
+</div>
+<script>
+// ---- 실제 시험 데이터 ----
+  const REGIONS = ["서울","경기","인천","대전","세종","충북","충남","부산","대구","울산","경북","경남","광주","전북","전남","강원","제주","전국"];
+
+  const RATE = {
+    "서울":{2022:3.7,2023:4.75,2024:4.48,2025:2.61,2026:3.4},
+    "경기":{2022:2.02,2023:2.06,2024:2.41,2025:1.93,2026:2.34},
+    "인천":{2022:2.3,2023:2.2,2024:2.59,2025:1.93,2026:2.46},
+    "대전":{2022:4.1,2023:2.89,2024:6.33,2025:3.1,2026:4.39},
+    "세종":{2022:3.31,2023:3.67,2024:5.89,2025:2.72,2026:7.83},
+    "충북":{2022:1.88,2023:2.12,2024:2.03,2025:1.56,2026:2.29},
+    "충남":{2022:2.32,2023:2.08,2024:2.04,2025:1.98,2026:2.35},
+    "부산":{2022:2.14,2023:2.15,2024:2.29,2025:2.01,2026:2.29},
+    "대구":{2022:1.72,2023:2.78,2024:2.36,2025:1.69,2026:2.53},
+    "울산":{2022:2.15,2023:2.04,2024:2.13,2025:1.86,2026:2.49},
+    "경북":{2022:1.76,2023:1.97,2024:2.08,2025:1.81,2026:2.27},
+    "경남":{2022:2.03,2023:2.09,2024:2.02,2025:1.83,2026:2.36},
+    "광주":{2022:9.6,2023:7.4,2024:9.2,2025:3.98,2026:5.14},
+    "전북":{2022:2.25,2023:2.51,2024:2.24,2025:1.91,2026:2.09},
+    "전남":{2022:2.01,2023:1.89,2024:2.25,2025:1.94,2026:2.51},
+    "강원":{2022:2.84,2023:2.97,2024:4.03,2025:2.31,2026:2.22},
+    "제주":{2022:1.86,2023:1.92,2024:2.16,2025:1.88,2026:2.15},
+    "전국":{2022:2.2,2023:2.24,2024:2.45,2025:2.01,2026:2.48}
+  };
+
+  const CUT1 = {
+    "서울":{2025:91.8,2026:93.5}, "경기":{2025:77.5,2026:80.17}, "인천":{2025:74.7,2026:81.83},
+    "대구":{2025:75.3,2026:83}, "부산":{2025:69.5,2026:83}, "대전":{2025:81.3,2026:91.5},
+    "세종":{2025:86.5,2026:91.67}, "광주":{2025:98,2026:89.17}, "울산":{2025:72,2026:82.5},
+    "강원":{2025:71.8,2026:75}, "경북":{2025:76.5,2026:75.67}, "경남":{2025:78.3,2026:82.17},
+    "전북":{2025:72.5,2026:77.17}, "전남":{2025:66,2026:82}, "충북":{2025:89.5,2026:80.17},
+    "충남":{2025:84,2026:80}, "제주":{2025:75,2026:79.5}, "전국":{2025:78.83,2026:82.83}
+  };
+
+  const CUT2 = {
+    "서울":{2025:168.8,2026:166.73}, "경기":{2025:163.4,2026:162.03}, "인천":{2025:162.5,2026:163.4},
+    "대구":{2025:160.5,2026:157.9}, "부산":{2025:159.7,2026:164.13}, "대전":{2025:165.3,2026:167.77},
+    "세종":{2025:163.7,2026:165.93}, "광주":{2025:179.9,2026:166.9}, "울산":{2025:160.88,2026:162.04},
+    "강원":{2025:156.9,2026:158.14}, "경북":{2025:163,2026:155.94}, "경남":{2025:160.7,2026:162.7},
+    "전북":{2025:158.3,2026:163.4}, "전남":{2025:155.2,2026:158}, "충북":{2025:167.4,2026:162.06},
+    "충남":{2025:165.9,2026:158.67}, "제주":{2025:160.6,2026:162.41}, "전국":{2025:163.1,2026:162.24}
+  };
+
+  const METRICS = {
+    rate: { label:"경쟁률", data: RATE, years:[2022,2023,2024,2025,2026], unit:"", fmt:(v)=>v.toFixed(2), suffix:":1" },
+    cut1: { label:"1차 합격선", data: CUT1, years:[2025,2026], unit:"점", fmt:(v)=>v.toFixed(2), suffix:"점" },
+    cut2: { label:"2차 합격선", data: CUT2, years:[2025,2026], unit:"점", fmt:(v)=>v.toFixed(2), suffix:"점" }
+  };
+
+  const rState = { metric:"rate", year:2026, region:"서울" };
+
+  const el = {
+    metricSeg: document.getElementById("metric-seg"),
+    yearSelect: document.getElementById("year-select"),
+    regionSelect: document.getElementById("region-select"),
+    bars: document.getElementById("real-bars"),
+    rankNote: document.getElementById("real-rank-note"),
+    trendChart: document.getElementById("trend-chart"),
+    trendLabel: document.getElementById("trend-metric-label")
+  };
+
+  REGIONS.forEach((r) => {
+    const opt = document.createElement("option");
+    opt.value = r; opt.textContent = r;
+    el.regionSelect.appendChild(opt);
+  });
+  el.regionSelect.value = rState.region;
+
+  function fillYearSelect() {
+    const years = METRICS[rState.metric].years;
+    el.yearSelect.innerHTML = "";
+    years.slice().reverse().forEach((y) => {
+      const opt = document.createElement("option");
+      opt.value = y; opt.textContent = y + "학년도";
+      el.yearSelect.appendChild(opt);
+    });
+    if (!years.includes(rState.year)) rState.year = years[years.length - 1];
+    el.yearSelect.value = rState.year;
+  }
+
+  function renderBars() {
+    const m = METRICS[rState.metric];
+    const rows = REGIONS
+      .filter((r) => m.data[r] && m.data[r][rState.year] != null)
+      .map((r) => ({ r, v: m.data[r][rState.year] }))
+      .sort((a, b) => b.v - a.v);
+    const max = Math.max(...rows.map((x) => x.v), 0.0001);
+
+    el.rankNote.textContent = `${rState.year}학년도 ${m.label} · 지역 ${rows.length}곳`;
+    el.bars.innerHTML = "";
+    rows.forEach(({ r, v }) => {
+      const li = document.createElement("li");
+      if (r === "전국") li.classList.add("is-me");
+      const pct = Math.max(2, (v / max) * 100);
+      li.innerHTML =
+        `<span class="name">${r}</span>` +
+        `<span class="track"><span class="fill" style="width:${pct}%"></span></span>` +
+        `<span class="val">${m.fmt(v)}${m.suffix}</span>`;
+      el.bars.appendChild(li);
+    });
+  }
+
+  function renderTrend() {
+    const m = METRICS[rState.metric];
+    el.trendLabel.textContent = "(" + m.label + ")";
+    const years = m.years;
+    const regionVals = years.map((y) => (m.data[rState.region] || {})[y]);
+    const natVals = years.map((y) => (m.data["전국"] || {})[y]);
+    const svg = el.trendChart;
+    svg.innerHTML = "";
+
+    const have = regionVals.some((v) => v != null);
+    if (!have) {
+      svg.style.display = "none";
+      return;
+    }
+    svg.style.display = "block";
+
+    const all = regionVals.concat(natVals).filter((v) => v != null);
+    const vMax = Math.max(...all);
+    const vMin = Math.min(...all);
+    const pad = (vMax - vMin) * 0.15 || vMax * 0.1 || 1;
+    const top = vMax + pad, bottom = Math.max(0, vMin - pad);
+
+    const W = 640, H = 220, L = 40, R = 14, T = 16, B = 28;
+    const plotW = W - L - R, plotH = H - T - B;
+    const n = years.length;
+    const x = (i) => L + (n === 1 ? plotW / 2 : (plotW * i) / (n - 1));
+    const y = (v) => T + plotH - ((v - bottom) / (top - bottom || 1)) * plotH;
+
+    const ns = "http://www.w3.org/2000/svg";
+    function line(vals, color) {
+      const pts = vals.map((v, i) => (v == null ? null : [x(i), y(v)])).filter(Boolean);
+      if (pts.length < 1) return;
+      if (pts.length > 1) {
+        const path = document.createElementNS(ns, "path");
+        path.setAttribute("d", "M" + pts.map((p) => p.join(",")).join(" L"));
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", color);
+        path.setAttribute("stroke-width", "2.5");
+        path.setAttribute("stroke-linejoin", "round");
+        path.setAttribute("stroke-linecap", "round");
+        svg.appendChild(path);
+      }
+      pts.forEach(([px, py]) => {
+        const c = document.createElementNS(ns, "circle");
+        c.setAttribute("cx", px); c.setAttribute("cy", py); c.setAttribute("r", "3.5");
+        c.setAttribute("fill", color);
+        svg.appendChild(c);
+      });
+    }
+
+    // axis baseline
+    const axis = document.createElementNS(ns, "line");
+    axis.setAttribute("x1", L); axis.setAttribute("x2", W - R);
+    axis.setAttribute("y1", H - B); axis.setAttribute("y2", H - B);
+    axis.setAttribute("stroke", "#dde6e2");
+    svg.appendChild(axis);
+
+    years.forEach((yr, i) => {
+      const t = document.createElementNS(ns, "text");
+      t.setAttribute("x", x(i)); t.setAttribute("y", H - 8);
+      t.setAttribute("text-anchor", "middle");
+      t.setAttribute("font-size", "11"); t.setAttribute("fill", "#869590");
+      t.textContent = yr;
+      svg.appendChild(t);
+    });
+
+    line(natVals, "#b8503f");
+    line(regionVals, "#07e29e");
+
+    regionVals.forEach((v, i) => {
+      if (v == null) return;
+      const t = document.createElementNS(ns, "text");
+      t.setAttribute("x", x(i)); t.setAttribute("y", y(v) - 9);
+      t.setAttribute("text-anchor", "middle"); t.setAttribute("class", "trend-pts");
+      t.setAttribute("font-size", "11"); t.setAttribute("fill", "#05815c"); t.setAttribute("font-weight", "700");
+      t.textContent = m.fmt(v);
+      svg.appendChild(t);
+    });
+  }
+
+  function renderReal() {
+    fillYearSelect();
+    renderBars();
+    renderTrend();
+  }
+
+  el.metricSeg.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-metric]");
+    if (!b) return;
+    rState.metric = b.dataset.metric;
+    [...el.metricSeg.children].forEach((c) => c.classList.toggle("is-on", c === b));
+    renderReal();
+  });
+  el.yearSelect.addEventListener("change", () => {
+    rState.year = Number(el.yearSelect.value);
+    renderBars();
+  });
+  el.regionSelect.addEventListener("change", () => {
+    rState.region = el.regionSelect.value;
+    renderTrend();
+  });
+
+  renderReal();
+</script></body></html>
