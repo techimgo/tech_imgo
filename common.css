@@ -1,0 +1,8 @@
+/* Shared site navigation */
+.site-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;position:sticky;top:0;z-index:20;background:var(--ground,#fff);padding:6px 0 8px;margin-bottom:2px}
+.site-nav a{border:1px solid var(--line-2,#c3d1cb);background:var(--surface,#fff);color:var(--ink-2,#56655f);border-radius:12px;padding:12px 6px;font-weight:700;font-size:13.5px;cursor:pointer;text-align:center;text-decoration:none;transition:background .12s,color .12s,border-color .12s}
+.site-nav a.is-on{background:var(--ink,#0e1a16);color:#fff;border-color:var(--ink,#0e1a16)}
+.site-nav a:hover{border-color:var(--ink,#0e1a16)}
+@media(max-width:420px){.site-nav a{font-size:12px;padding:11px 4px}}
+.site-nav-shell{max-width:1060px;margin:0 auto;padding:0 20px}
+@media(max-width:420px){.site-nav-shell{padding:0 20px}}
