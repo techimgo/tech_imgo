@@ -1,0 +1,227 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2027 예상 | 테크니컬 초등임용 데이터랩</title>
+<meta name="description" content="2027학년도 초등임용 예상 경쟁률과 합격선 자료를 확인합니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Nanum+Gothic+Coding:wght@400;700&display=swap">
+<link rel="stylesheet" href="common.css">
+<style>
+  :root{
+    color-scheme: light;
+    --ground:#ffffff; --surface:#ffffff; --surface-2:#fafcfb;
+    --ink:#0e1a16; --ink-2:#56655f; --ink-3:#869590;
+    --line:#dde6e2; --line-2:#c3d1cb;
+    --avg:#07e29e; --avg-soft:#07e29e2e; --avg-ink:#05815c;
+    --cut:#44526b; --cut-soft:#44526b1f;
+    --cut2:#b8503f; --cut2-soft:#b8503f1a;
+    --sans:"Nanum Gothic","Apple SD Gothic Neo","Malgun Gothic",-apple-system,sans-serif;
+    --mono:"Nanum Gothic Coding",ui-monospace,SFMono-Regular,Menlo,monospace;
+    padding-top: env(safe-area-inset-top,0px);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;max-width:100%;overflow-x:hidden}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:15px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; word-break:keep-all; overflow-wrap:break-word;
+  }
+  h1,h2,h3{text-wrap:balance} p{text-wrap:pretty}
+  button,select{-webkit-tap-highlight-color:transparent; touch-action:manipulation; font:inherit}
+
+  .wrap{
+    max-width:1060px; margin:0 auto;
+    padding-left:max(20px, env(safe-area-inset-left));
+    padding-right:max(20px, env(safe-area-inset-right));
+    padding-block:32px calc(56px + env(safe-area-inset-bottom));
+    display:flex; flex-direction:column; gap:22px;
+  }
+
+  .brand{display:flex; align-items:center; gap:12px}
+  .logo{
+    display:grid; place-items:center; width:40px; height:40px; flex:none;
+    border-radius:11px; background:var(--avg); color:#fff;
+    font-family:Georgia,"Times New Roman",serif; font-weight:700; font-style:italic; font-size:17px;
+  }
+  h1{margin:0; font-size:min(26px,5.6vw); font-weight:800; letter-spacing:-0.02em; line-height:1.3}
+  .lede{margin:2px 0 0; max-width:60ch; color:var(--ink-2); font-size:14px}
+
+  nav.tabs{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
+    position:sticky; top:0; z-index:5; background:var(--ground);
+    padding-block:6px 2px;
+  }
+  nav.tabs button{
+    border:1px solid var(--line-2); background:var(--surface);
+    color:var(--ink-2); border-radius:12px; padding:12px 6px;
+    font-weight:700; font-size:13.5px; cursor:pointer; text-align:center;
+    transition:background .12s,color .12s,border-color .12s;
+  }
+  nav.tabs button.is-on{background:var(--ink); color:#fff; border-color:var(--ink)}
+  @media (max-width:420px){ nav.tabs button{font-size:12px; padding:11px 4px} }
+
+  section.view{display:none}
+  section.view.is-on{display:flex; flex-direction:column; gap:18px}
+
+  .panel{
+    border:1px solid var(--line); border-radius:14px; padding:16px;
+    background:var(--surface); display:flex; flex-direction:column; gap:14px;
+  }
+  .panel-head h2{margin:0 0 4px; font-size:16px; font-weight:800}
+  .panel-head .note{margin:0; color:var(--ink-3); font-size:12.5px}
+
+  .seg{display:inline-flex; border:1px solid var(--line-2); border-radius:10px; padding:3px; gap:2px}
+  .seg button{
+    border:none; background:none; color:var(--ink-2); font-weight:700; font-size:13px;
+    padding:7px 12px; border-radius:7px; cursor:pointer;
+  }
+  .seg button.is-on{background:var(--ink); color:#fff}
+
+  .row-controls{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+  select.plain{
+    font-family:var(--sans); font-size:13.5px; color:var(--ink); background:var(--surface);
+    border:1px solid var(--line-2); border-radius:8px; padding:8px 28px 8px 10px;
+    appearance:none; -webkit-appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),
+                      linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+    background-position:calc(100% - 15px) 50%, calc(100% - 10px) 50%;
+    background-size:5px 5px, 5px 5px; background-repeat:no-repeat;
+  }
+
+  .bars{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+  .bars li{display:grid; grid-template-columns:52px 1fr 52px; align-items:center; gap:8px}
+  .bars .name{font-size:12.5px; color:var(--ink-2); font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .bars .track{position:relative; height:20px; background:var(--surface-2); border-radius:6px; overflow:hidden}
+  .bars .fill{position:absolute; inset:0 auto 0 0; border-radius:6px; background:var(--avg)}
+  .bars li.is-me .fill{background:var(--cut2)}
+  .bars .val{font-family:var(--mono); font-size:12px; font-weight:700; color:var(--ink); text-align:right; font-variant-numeric:tabular-nums}
+
+  .trend-wrap{display:flex; flex-direction:column; gap:10px}
+  .trend-chart{width:100%; height:auto; display:block}
+  .trend-pts text{font-family:var(--mono); font-variant-numeric:tabular-nums}
+  .legend-inline{display:flex; gap:14px; margin:0; font-size:12px; color:var(--ink-3)}
+  .legend-inline span{display:inline-flex; align-items:center; gap:5px}
+  .legend-inline i{width:9px; height:9px; border-radius:3px; background:var(--avg); display:inline-block}
+  .legend-inline i.i-cut{background:var(--cut)}
+  .legend-inline i.i-cut2{background:var(--cut2)}
+
+  .empty-note{color:var(--ink-3); font-size:13px; padding:10px 2px}
+
+  .mock-frame-wrap{border-radius:14px; overflow:hidden; border:1px solid var(--line)}
+  iframe.mock-frame{width:100%; border:0; display:block; height:1400px; background:#faf9f5}
+
+  .notice{
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:16px;
+    padding:48px 22px; border:1px dashed var(--line-2); border-radius:16px; background:var(--surface-2);
+  }
+  .notice-icon{
+    display:grid; place-items:center; width:52px; height:52px; border-radius:50%;
+    background:var(--avg-soft); color:var(--avg-ink); flex:none;
+  }
+  .notice-icon svg{width:24px; height:24px}
+  .notice-title{margin:0; font-size:17px; font-weight:800; color:var(--ink); max-width:34ch}
+  .notice-sub{margin:0; font-size:13px; color:var(--ink-2); max-width:44ch; line-height:1.7}
+  .notice-badge{
+    font-family:var(--mono); font-size:11.5px; font-weight:700; letter-spacing:.04em;
+    color:var(--avg-ink); background:var(--avg-soft); border-radius:999px; padding:5px 12px;
+  }
+
+  .disclaimer{
+    font-size:12px; color:var(--ink-3); border-top:1px solid var(--line); padding-top:14px;
+  }
+
+  .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .kpi{border:1px solid var(--line);border-radius:14px;padding:14px 12px;background:var(--surface)}
+  .kpi.main{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .kpi small{display:block;font-size:11.5px;color:var(--ink-3);font-weight:700}.kpi.main small{color:#9fb3ab}
+  .kpi{min-width:0}
+  .kpi b em{font-size:11px;font-style:normal;font-family:var(--sans);font-weight:700;margin-right:3px;opacity:.7}
+  .kpi b{display:block;white-space:nowrap;font-family:var(--mono);font-size:min(24px,5.6vw);font-weight:700;line-height:1.25;font-variant-numeric:tabular-nums}
+  .kpi span{font-size:11.5px;color:var(--ink-2)}.kpi.main span{color:#9fb3ab}
+  .upd{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:12px;background:var(--avg-soft);color:var(--avg-ink);font-size:13px;font-weight:700}
+  .upd i{width:8px;height:8px;border-radius:50%;background:var(--avg);flex:none}
+  .rng{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+  .rng li{display:grid;grid-template-columns:38px 1fr 40px;align-items:center;gap:8px;cursor:pointer;border-radius:8px;padding:2px 0}
+  .rng li.is-me .name{color:var(--cut2)}
+  .rng .name{font-size:13px;font-weight:800;color:var(--ink-2)}
+  .rng .track{position:relative;height:22px;background:var(--surface-2);border-radius:6px}
+  .rng .band{position:absolute;top:5px;bottom:5px;background:var(--avg-soft);border-radius:5px}
+  .rng .dot{position:absolute;top:3px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--avg);border:2px solid #fff;box-shadow:0 0 0 1px var(--avg-ink)}
+  .rng li.is-me .dot{background:var(--cut2);box-shadow:0 0 0 1px var(--cut2)}
+  .rng .prev{position:absolute;top:2px;bottom:2px;width:2px;background:var(--cut)}
+  .rng .val{font-family:var(--mono);font-size:12.5px;font-weight:700;text-align:right}
+  .axis{display:flex;justify-content:space-between;margin:0 40px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+  .legend-inline .i-prev{width:2px;height:10px;border-radius:0;background:var(--cut)}
+  .legend-inline .i-band{background:var(--avg-soft);border:1px solid var(--avg)}
+  .smalls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .sm{border:1px solid var(--cut2-soft);background:var(--cut2-soft);border-radius:12px;padding:12px 8px;text-align:center}
+  .sm b{display:block;font-size:14px}.sm em{display:block;font-style:normal;font-family:var(--mono);font-size:20px;font-weight:700;color:var(--cut2)}
+  .sm span{font-size:11.5px;color:var(--ink-2);display:block;line-height:1.5}
+  .tbl{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px;min-width:420px}
+  th,td{padding:8px 6px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;font-weight:800}th{font-size:11.5px;color:var(--ink-3)}
+  td{font-family:var(--mono);font-variant-numeric:tabular-nums}tr.tot td{font-weight:700;background:var(--surface-2)}
+  .up{color:var(--cut2)}.dn{color:var(--avg-ink)}
+  .tips{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+  .detail-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2)}
+  .chips b{font-family:var(--mono);color:var(--ink)}
+</style></head><body>
+<div class="site-nav-shell"><nav class="site-nav" aria-label="데이터 종류 선택"><a href="real.html" class="">실제 시험 데이터</a><a href="mock.html" class="">모의고사 데이터</a><a href="expected-2027.html" class="is-on">2027 예상</a></nav></div>
+<div class="wrap">
+<header><div class="brand"><span class="logo" aria-hidden="true">t</span><h1>테크니컬 초등임용 데이터랩</h1></div><p class="lede">전략적 임고 완성, 테크니컬</p></header>
+<section class="view is-on" aria-label="2027 예상">
+<div class="upd"><i></i>2027학년도 예상 자료는 원서접수 주간 매일 20시에 업데이트돼요.</div>
+<div class="kpis" id="kpis"></div>
+<p class="note" style="margin:-6px 2px 0;color:var(--ink-3);font-size:12px">※ 수정 반영된 2027 모집 정원(전국 2,549명, 2026 대비 −11%) 기준이에요.</p>
+
+<div class="panel"><div class="panel-head"><h2>내 지역, 얼마나 몰릴까?</h2><p class="note">점=2027 예상, 초록 띠=80% 예상 범위, 검은 선=2026 실제. 지역을 누르면 아래에 자세히 나와요.</p></div>
+<div class="legend-inline"><span><i></i>2027 예상</span><span><i class="i-band"></i>80% 범위</span><span><i class="i-prev"></i>2026</span></div>
+<ul class="rng" id="rng"></ul><div class="axis" id="axis"></div>
+<p class="note" style="margin:0;color:var(--ink-3);font-size:12.5px">※ 서울을 뺀 나머지 지역은 대부분 2.3~2.7에 몰려 있어 순위 차이가 오차 범위 안이에요.</p></div>
+
+<div class="panel"><div class="panel-head"><h2>극단값 주의 지역</h2><p class="note">모집이 2~3명뿐이라 지원자 수 가정(45명)에 크게 좌우돼요. 과거 지원자는 26~57명(45명 가정).</p></div><div class="smalls" id="smalls"></div></div>
+
+<div class="panel"><div class="detail-h"><div class="panel-head"><h2>지역별 5년 추이</h2></div><select class="plain" id="sel" aria-label="지역 선택"></select></div>
+<div class="chips" id="chips"></div><svg class="trend-chart" id="trend" viewBox="0 0 340 190" role="img" aria-label="경쟁률 추이"></svg>
+<div class="legend-inline"><span><i class="i-cut"></i>실제(2022~26)</span><span><i class="i-cut2"></i>2027 예상·80% 범위</span></div></div>
+
+<div class="panel"><div class="panel-head"><h2>모집·경쟁률 한눈에 비교</h2><p class="note">2027 모집은 최신 정원 기준이에요.</p></div><div class="tbl"><table id="tbl"></table></div></div>
+
+<div class="panel"><div class="panel-head"><h2>수험생 체크포인트</h2></div><ul class="tips">
+<li><b>전국 지원자는 해마다 7,100~7,900명으로 비슷</b>해요. 모집이 줄면 경쟁률이 오르는 구조예요. 2027 모집(2,549명)은 2026보다 약 11% 줄어 경쟁률이 <b>약 2.69</b>로 예상돼요.</li>
+<li>수험생이 <b>모집 많은 지역으로 이동</b>하기 때문에, 모집이 늘어도 경쟁률이 크게 낮아지진 않아요.</li>
+<li>서울이 약 3.5로 가장 높지만, 나머지 지역은 대부분 2.3~2.7에 몰려 있어 <b>순위 구분이 어려워요.</b></li>
+<li>전년에 경쟁률이 높았던 지역은 다음 해 <b>일부 식는 경향</b>(평균회귀)이 있어요.</li>
+<li>과거 예측 오차는 평균 약 10%. 원서접수(9/28~10/2) 중 실제 경쟁률을 함께 확인하세요.</li></ul></div>
+
+<p class="disclaimer">2027 모집 정원은 지역별 최신 정원(전국 2,549명)을 반영했어요. 정원이 바뀌면 예상치도 달라져요. 참고로 교육부 9/9 확정 모집공고의 초등 합계는 2,821명으로, 이 자료와 다릅니다. 3개 모형(지원자 증감·합격선 포함·전국 대비 위치 유지)의 기하평균으로 산출했고, 표본이 5개 연도뿐이라 참고용입니다. 80% 범위는 예측값×exp(±1.28σ)로 계산했어요.</p>
+</section>
+<script>
+const D=[{"n": "광주", "s": true, "m26": 28, "r26": 5.14, "m27": 2, "e": 22.5, "ap": 45, "lo": 15, "hi": 32.5, "h": [[2022, 5, 9.6], [2023, 5, 7.4], [2024, 5, 9.2], [2025, 41, 3.98], [2026, 28, 5.14]]}, {"n": "세종", "s": true, "m26": 6, "r26": 7.83, "m27": 3, "e": 15, "ap": 45, "lo": 10, "hi": 21.67, "h": [[2022, 72, 3.31], [2023, 64, 3.67], [2024, 9, 5.89], [2025, 36, 2.72], [2026, 6, 7.83]]}, {"n": "대전", "s": true, "m26": 31, "r26": 4.39, "m27": 3, "e": 15, "ap": 45, "lo": 10, "hi": 21.67, "h": [[2022, 11, 4.1], [2023, 9, 2.89], [2024, 9, 6.33], [2025, 39, 3.1], [2026, 31, 4.39]]}, {"n": "서울", "s": false, "m26": 195, "r26": 3.4, "m27": 247, "e": 3.46, "ap": 855, "lo": 2.86, "hi": 4.19, "h": [[2022, 201, 3.7], [2023, 107, 4.75], [2024, 101, 4.48], [2025, 244, 2.61], [2026, 195, 3.4]]}, {"n": "울산", "s": false, "m26": 61, "r26": 2.49, "m27": 62, "e": 2.66, "ap": 165, "lo": 2.2, "hi": 3.22, "h": [[2022, 122, 2.15], [2023, 112, 2.04], [2024, 88, 2.13], [2025, 94, 1.86], [2026, 61, 2.49]]}, {"n": "전남", "s": false, "m26": 121, "r26": 2.5, "m27": 137, "e": 2.65, "ap": 363, "lo": 2.19, "hi": 3.21, "h": [[2022, 187, 1.94], [2023, 151, 1.93], [2024, 138, 2.37], [2025, 143, 1.83], [2026, 121, 2.5]]}, {"n": "충남", "s": false, "m26": 243, "r26": 2.41, "m27": 185, "e": 2.63, "ap": 487, "lo": 2.17, "hi": 3.19, "h": [[2022, 139, 2.39], [2023, 139, 2.13], [2024, 225, 2.04], [2025, 231, 2.01], [2026, 243, 2.41]]}, {"n": "대구", "s": false, "m26": 72, "r26": 2.53, "m27": 121, "e": 2.61, "ap": 315, "lo": 2.15, "hi": 3.16, "h": [[2022, 46, 1.72], [2023, 27, 2.78], [2024, 28, 2.36], [2025, 67, 1.69], [2026, 72, 2.53]]}, {"n": "인천", "s": false, "m26": 175, "r26": 2.46, "m27": 219, "e": 2.59, "ap": 568, "lo": 2.14, "hi": 3.14, "h": [[2022, 200, 2.3], [2023, 185, 2.2], [2024, 147, 2.59], [2025, 206, 1.93], [2026, 175, 2.46]]}, {"n": "경북", "s": false, "m26": 271, "r26": 2.34, "m27": 167, "e": 2.59, "ap": 432, "lo": 2.14, "hi": 3.14, "h": [[2022, 328, 1.76], [2023, 317, 1.97], [2024, 253, 2.08], [2025, 293, 1.81], [2026, 271, 2.34]]}, {"n": "부산", "s": false, "m26": 255, "r26": 2.29, "m27": 160, "e": 2.57, "ap": 411, "lo": 2.12, "hi": 3.11, "h": [[2022, 343, 2.14], [2023, 324, 2.15], [2024, 305, 2.29], [2025, 379, 2.01], [2026, 255, 2.29]]}, {"n": "경기", "s": false, "m26": 995, "r26": 2.34, "m27": 815, "e": 2.56, "ap": 2082, "lo": 2.11, "hi": 3.1, "h": [[2022, 1385, 2.04], [2023, 1420, 2.08], [2024, 1224, 2.42], [2025, 1630, 1.93], [2026, 995, 2.34]]}, {"n": "경남", "s": false, "m26": 123, "r26": 2.36, "m27": 141, "e": 2.52, "ap": 356, "lo": 2.08, "hi": 3.06, "h": [[2022, 156, 2.03], [2023, 138, 2.09], [2024, 164, 2.02], [2025, 169, 1.83], [2026, 123, 2.36]]}, {"n": "제주", "s": false, "m26": 55, "r26": 2.15, "m27": 24, "e": 2.48, "ap": 60, "lo": 1.87, "hi": 3.29, "h": [[2022, 60, 1.85], [2023, 99, 1.92], [2024, 80, 2.16], [2025, 86, 1.88], [2026, 55, 2.15]]}, {"n": "충북", "s": false, "m26": 72, "r26": 2.29, "m27": 69, "e": 2.48, "ap": 171, "lo": 2.05, "hi": 3.01, "h": [[2022, 80, 1.88], [2023, 74, 2.12], [2024, 30, 2.03], [2025, 77, 1.56], [2026, 72, 2.29]]}, {"n": "강원", "s": false, "m26": 119, "r26": 2.22, "m27": 147, "e": 2.36, "ap": 347, "lo": 1.95, "hi": 2.86, "h": [[2022, 95, 2.84], [2023, 86, 2.97], [2024, 69, 4.03], [2025, 103, 2.31], [2026, 119, 2.22]]}, {"n": "전북", "s": false, "m26": 53, "r26": 2.09, "m27": 47, "e": 2.3, "ap": 108, "lo": 1.9, "hi": 2.79, "h": [[2022, 56, 2.25], [2023, 41, 2.51], [2024, 38, 2.24], [2025, 102, 1.91], [2026, 53, 2.09]]}], f=x=>x.toFixed(2), $=id=>document.getElementById(id);
+const G=D.filter(d=>!d.s).sort((a,b)=>b.e-a.e), S=D.filter(d=>d.s).sort((a,b)=>b.r26-a.r26);
+let me='서울';
+$('kpis').innerHTML=`<div class="kpi main"><small>2027 전국 예상 경쟁률</small><b>2.69</b><span>2026 전국 2.48</span></div><div class="kpi"><small>2027 전국 모집</small><b>2,549</b><span>2026 2,875명</span></div><div class="kpi"><small>2027 전국 예상 지원자</small><b><em>약</em>6,856</b><span>명</span></div>`;
+const MIN=1.5,MAX=4.5,p=v=>(Math.min(Math.max(v,MIN),MAX)-MIN)/(MAX-MIN)*100;
+function rng(){$('rng').innerHTML=G.map(d=>`<li data-n="${d.n}" class="${d.n==me?'is-me':''}"><span class="name">${d.n}</span><span class="track"><span class="band" style="left:${p(d.lo)}%;width:${p(d.hi)-p(d.lo)}%"></span><span class="prev" style="left:${p(d.r26)}%"></span><span class="dot" style="left:${p(d.e)}%"></span></span><span class="val">${f(d.e)}</span></li>`).join('');
+$('axis').innerHTML=[1.5,2,2.5,3,3.5,4,4.5].map(v=>`<span>${v}</span>`).join('');
+$('rng').querySelectorAll('li').forEach(li=>li.onclick=()=>{me=li.dataset.n;$('sel').value=me;rng();trend()})}
+$('smalls').innerHTML=S.map(d=>`<div class="sm"><b>${d.n}</b><em>${f(d.e)}</em><span>범위 ${d.lo.toFixed(0)}~${d.hi.toFixed(0)}<br>모집 ${d.m26}→${d.m27}명<br>2026 ${f(d.r26)}</span></div>`).join('');
+$('sel').innerHTML=[...G,...S].map(d=>`<option>${d.n}</option>`).join('');$('sel').value=me;
+$('sel').onchange=e=>{me=e.target.value;rng();trend()};
+function trend(){const d=D.find(x=>x.n==me),h=d.h,W=340,H=190,L=30,Rr=14,T=16,B=26;
+const vs=[...h.map(x=>x[2]),d.lo,d.hi],mn=Math.floor(Math.min(...vs)*2)/2-.5>0?Math.floor(Math.min(...vs)*2)/2:0,mx=Math.ceil(Math.max(...vs)*2)/2;
+const X=y=>L+(y-2022)/5*(W-L-Rr),Y=v=>H-B-(v-mn)/(mx-mn)*(H-B-T);
+let s='';for(let i=0;i<=4;i++){const v=mn+(mx-mn)*i/4;s+=`<line x1="${L}" x2="${W-Rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${L-4}" y="${Y(v)+4}" text-anchor="end" font-size="10" fill="var(--ink-3)" font-family="var(--mono)">${v.toFixed(1)}</text>`}
+const pts=h.map(x=>[X(x[0]),Y(x[2])]);
+s+=`<polyline fill="none" stroke="var(--cut)" stroke-width="2" points="${pts.map(q=>q.join(',')).join(' ')}"/><line x1="${pts.at(-1)[0]}" y1="${pts.at(-1)[1]}" x2="${X(2027)}" y2="${Y(d.e)}" stroke="var(--cut2)" stroke-dasharray="4 3"/>`;
+h.forEach((x,i)=>{s+=`<circle cx="${pts[i][0]}" cy="${pts[i][1]}" r="3.5" fill="var(--cut)"/><text x="${pts[i][0]}" y="${pts[i][1]-8}" text-anchor="middle" font-size="10" fill="var(--ink)" font-family="var(--mono)">${x[2].toFixed(1)}</text><text x="${pts[i][0]}" y="${H-8}" text-anchor="middle" font-size="10" fill="var(--ink-3)">${x[0]}</text>`});
+s+=`<line x1="${X(2027)}" x2="${X(2027)}" y1="${Y(d.hi)}" y2="${Y(d.lo)}" stroke="var(--cut2)" stroke-width="5" stroke-linecap="round" opacity=".3"/><circle cx="${X(2027)}" cy="${Y(d.e)}" r="5" fill="var(--cut2)"/><text x="${X(2027)}" y="${Y(d.hi)-6}" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--cut2)" font-family="var(--mono)">${d.e.toFixed(1)}</text><text x="${X(2027)}" y="${H-8}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--cut2)">2027</text>`;
+$('trend').innerHTML=s;
+$('chips').innerHTML=`<span>2027 예상 <b>${f(d.e)}</b></span><span>범위 <b>${f(d.lo)}~${f(d.hi)}</b></span><span>모집 <b>${d.m26}→${d.m27}명</b></span><span>예상 지원 <b>${d.ap}명</b></span>`}
+const all=[...G,...S].sort((a,b)=>b.e-a.e);
+$('tbl').innerHTML=`<tr><th>지역</th><th>모집 26→27</th><th>2026</th><th>2027 예상</th><th>변화</th></tr>`+all.map(d=>{const c=d.e-d.r26;return `<tr><td>${d.n}</td><td>${d.m26}→${d.m27}</td><td>${f(d.r26)}</td><td>${f(d.e)}</td><td class="${c>0?'up':'dn'}">${c>0?'▲':'▼'}${Math.abs(c).toFixed(2)}</td></tr>`}).join('')+`<tr class="tot"><td>전국</td><td>2,875→2,549</td><td>2.48</td><td>2.69</td><td class="up">▲0.21</td></tr>`;
+rng();trend();
+</script>
+</div></body></html>
