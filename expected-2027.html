@@ -45,8 +45,8 @@
     border-radius:11px; background:var(--avg); color:#fff;
     font-family:Georgia,"Times New Roman",serif; font-weight:700; font-style:italic; font-size:17px;
   }
-  h1{margin:0; font-size:min(26px,5.6vw); font-weight:800; letter-spacing:-0.02em; line-height:1.3}
-  .lede{margin:2px 0 0; max-width:60ch; color:var(--ink-2); font-size:14px}
+  h1{margin:0; min-width:0; font-size:min(32px,3.4vw); font-weight:700; letter-spacing:-0.03em; line-height:1.3; white-space:nowrap}
+  .lede{margin:14px 0 0; max-width:54ch; color:var(--ink-2); font-size:14.5px; line-height:1.78}
 
   nav.tabs{
     display:grid; grid-template-columns:repeat(3,1fr); gap:8px;
@@ -180,10 +180,17 @@
   .tbl.sortable th[aria-sort="ascending"] button::after{content:"▲";opacity:1;color:var(--avg-ink)}
   .tbl.sortable th[aria-sort="descending"] button::after{content:"▼";opacity:1;color:var(--avg-ink)}
   .tbl.sortable td.hi{font-weight:700;color:var(--ink)}
+@media(max-width:460px){.brand{gap:10px}.logo{width:34px;height:34px;border-radius:9px}}
 </style></head><body>
 <div class="site-nav-shell"><nav class="site-nav" aria-label="데이터 종류 선택"><a href="real.html" class="">실제 시험 데이터</a><a href="mock.html" class="">모의고사 데이터</a><a href="expected-2027.html" class="is-on">2027 예상</a></nav></div>
 <div class="wrap">
-<header><div class="brand"><span class="logo" aria-hidden="true">t</span><h1>테크니컬 초등임용 데이터랩</h1></div><p class="lede">전략적 임고 완성, 테크니컬</p></header>
+<header>
+    <div class="brand">
+      <span class="logo" aria-hidden="true">t</span>
+      <h1 data-fit-title>2027 초등임용 테크니컬 경쟁률 예상 분석</h1>
+    </div>
+    <p class="lede">2027학년도 초등임용 예상 경쟁률과 합격선 자료를 확인합니다.</p>
+  </header>
   <section class="view is-on" aria-label="2027 예상">
 <div class="upd"><i></i>2027학년도 예상 자료는 원서접수 주간 매일 20시에 업데이트돼요. (2026년 9월 30일 업데이트)</div>
 <div class="kpis" id="kpis"></div>
@@ -273,4 +280,4 @@ rows:[['2026 경쟁률',f(d.r26)+' '+dl(d.e-d.r26)],['모집 (26→27)',`${d.m26
 ['1일차 지원',`${d.a27}명 <small>(2026 ${d.a26}명 ${pc(d.a27,d.a26)})</small>`]]})}});
 rng();trend();d1();
 </script>
-</div></body></html>
+</div><script src="hitnote.js"></script></body></html>
