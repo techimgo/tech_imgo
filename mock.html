@@ -130,6 +130,14 @@
     font-size: 14.5px;
   }
 
+  .updated {
+    margin: 10px 0 0;
+    font-size: 12px;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .updated b { font-weight: 700; color: var(--ink-2); }
+
   .promo {
     display: flex;
     align-items: center;
@@ -513,12 +521,6 @@
   }
   .box-delta.over { color: var(--avg-ink); }
   .box-delta.under { color: var(--warn); }
-  .box-takers {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    color: var(--ink-3);
-    font-variant-numeric: tabular-nums;
-  }
   .box.empty { border-style: dashed; }
   .box.empty .box-val { color: var(--ink-3); font-size: 11.5px; font-weight: 400; }
 
@@ -749,13 +751,11 @@
   .field > span { font-size: 11.5px; }
 
   .chip,
-  .box-takers,
   .box-delta,
   .alloc-list li {
     font-family: var(--sans);
     font-variant-numeric: tabular-nums;
   }
-  .box-takers { font-size: 11px; }
   .gap-text, .mine-text { font-family: var(--sans); }
 
   .nw { white-space: nowrap; }
@@ -844,6 +844,7 @@
       <h1>2027 초등임용 테크니컬 모의고사 성적 분석</h1>
     </div>
     <p class="lede">전국 17개 시·도의 회차별 평균 점수와 1배수컷입니다. 내 점수를 넣으면 컷과의 차이를, 과목 점수까지 넣으면 무엇부터 볼지를 정리해 드립니다.</p>
+    <p class="updated">최근 업데이트 <b>2026.09.30</b></p>
     <div class="promo" role="note" aria-label="적중노트 신제품 안내">
       <span class="promo-mark">Technical</span>
       <div class="promo-text">
@@ -944,7 +945,7 @@
   <section class="disclaimer" aria-label="안내사항">
     <b>안내사항</b><br>
     본 리포트는 제한된 표본을 기반으로 작성된 통계 자료이므로, 결과에 과도하게 의존하지 마시고 참고용으로만 활용하시기 바랍니다.<br>
-    향후 성적 데이터 추가 업데이트 및 지원 지역 변경 요청에 따라 응시 인원, 평균, 석차, 합격선 등의 집계 결과가 변경될 수 있습니다.
+    향후 성적 데이터 추가 업데이트 및 지원 지역 변경 요청에 따라 평균, 석차, 합격선 등의 집계 결과가 변경될 수 있습니다.
   </section>
 </div>
 
@@ -957,122 +958,84 @@
       label: "일반",
       ready: 5,
       average: {
-        "강원": [43.11, 46.38, null, null, null],
-        "경기": [23.09, 48, 49.12, 46.78, 47],
-        "경남": [45.69, 40.17, 49.94, 34.85, null],
-        "경북": [41.61, 43.32, 44.96, 40.86, null],
-        "광주": [null, null, null, null, null],
-        "대구": [53.08, 52.54, 52.5, 56.64, null],
-        "대전": [null, null, null, null, null],
-        "부산": [35.43, 48.49, 47.64, 43.38, 56],
-        "서울": [51.9, 53.58, 51.25, 50.38, 57.83],
-        "세종": [null, null, null, null, null],
-        "울산": [42.34, 32.03, 50.58, null, null],
-        "인천": [37.52, 42.31, 44.64, 44.86, null],
-        "전남": [33.25, 47.42, 46.23, 49.57, null],
-        "전북": [48.65, null, null, null, null],
-        "제주": [47.89, 44.54, 47.14, null, null],
-        "충남": [43.23, 44.77, 46.77, 48.24, 49.34],
-        "충북": [48.24, 50.15, 57.56, 49.27, null]
+        "강원": [43.11, 47.74, 56, 54, 52],
+        "경기": [47.3, 48, 49.12, 49.19, 47],
+        "경남": [45.69, 45.42, 48.33, 39, 52],
+        "경북": [43.29, 43.32, 47.18, 44.82, 43],
+        "광주": [51.5, 30, 55, 45.5, null],
+        "대구": [54.29, 52.54, 52.5, 56.64, 52],
+        "대전": [50.38, 49.67, 40, 57.5, 52],
+        "부산": [48.08, 48.49, 50.07, 48.42, 56],
+        "서울": [51.9, 53.58, 52.76, 53.63, 57.83],
+        "세종": [53.5, 55.5, 47.38, 51, 52],
+        "울산": [42.34, 42.37, 53.62, 57, 52],
+        "인천": [44.89, 47.02, 47.09, 47.27, 52],
+        "전남": [41.43, 46.14, 47.84, 50.68, 52],
+        "전북": [50.94, 51, 46.48, 51.88, 52],
+        "제주": [47.89, 45.62, 47.57, 43, 52],
+        "충남": [47.06, 48.96, 46.77, 50.7, 49.34],
+        "충북": [51.97, 50.15, 57.56, 53.07, 56]
       },
       cutoff: {
-        "강원": [42, 45.5, null, null, null],
-        "경기": [21, 44, 46, 42, 36],
-        "경남": [41, 40, 50, 34.5, null],
-        "경북": [39.5, 36, 41.5, 34, null],
-        "광주": [null, null, null, null, null],
-        "대구": [53, 52.5, 51, 56, null],
-        "대전": [null, null, null, null, null],
-        "부산": [32.5, 49.5, 45, 41.5, 55],
-        "서울": [50, 54.5, 49, 46, 51],
-        "세종": [null, null, null, null, null],
-        "울산": [39, 30.5, 50.5, null, null],
-        "인천": [36, 40, 44.5, 44.5, null],
-        "전남": [32.5, 47.5, 44, 49.5, null],
-        "전북": [48.5, null, null, null, null],
-        "제주": [47.5, 44, 54, null, null],
-        "충남": [38, 40, 44, 48, 43.5],
-        "충북": [40, 43, 57, 48, null]
-      },
-      takers: {
-        "강원": [137, 85, 116, 36, 17],
-        "경기": [616, 380, 527, 171, 82],
-        "경남": [95, 59, 83, 26, 12],
-        "경북": [113, 72, 103, 35, 15],
-        "광주": [4, 2, 4, 1, 0],
-        "대구": [92, 57, 76, 25, 11],
-        "대전": [4, 3, 4, 1, 1],
-        "부산": [135, 87, 112, 38, 17],
-        "서울": [293, 188, 255, 89, 42],
-        "세종": [5, 3, 4, 1, 1],
-        "울산": [47, 30, 39, 12, 6],
-        "인천": [171, 107, 147, 49, 21],
-        "전남": [104, 65, 88, 28, 13],
-        "전북": [33, 20, 27, 8, 4],
-        "제주": [19, 13, 47, 4, 2],
-        "충남": [135, 85, 112, 37, 19],
-        "충북": [43, 27, 39, 15, 6]
+        "강원": [42, 48, 56, 54, 65.5],
+        "경기": [57, 44, 46, 44, null],
+        "경남": [41, 50, 51, 41, 61],
+        "경북": [41.24, 36, 43.82, 37.29, 43],
+        "광주": [58.5, 32, 62.5, 45.5, null],
+        "대구": [51, 52.5, 51, 56, 72.5],
+        "대전": [55.5, 54.5, 51, 57.5, 52],
+        "부산": [46, 49.5, 47.87, 43, 55],
+        "서울": [50, 54.5, 50.67, 49, 51],
+        "세종": [61, 55.5, 54.5, 51, 52],
+        "울산": [39, 37, 59, 57, 56.5],
+        "인천": [43.98, 44.68, 43, 47, 63.5],
+        "전남": [43, 52, 45.32, 53, 66],
+        "전북": [53, 51, 63.5, 58.5, 60],
+        "제주": [48, 57, 56, 43, 57],
+        "충남": [42.01, 44.38, 44, 47, 43.5],
+        "충북": [43.25, 43, 57, 65, 56]
       }
     },
     remaster: {
       label: "리마스터",
       ready: 3,
       average: {
-        "강원": [33.65, 33.65, 37.06, null, null],
-        "경기": [42.46, 37.31, 41.18, null, null],
-        "경남": [23.7, 40.68, 42.72, null, null],
-        "경북": [38.72, null, null, null, null],
-        "광주": [37.5, null, null, null, null],
-        "대구": [35.74, 34.06, 49.94, null, null],
-        "대전": [null, null, null, null, null],
-        "부산": [34.02, 41.73, 54.21, null, null],
-        "서울": [39.46, 44.39, 50.9, null, null],
-        "세종": [null, null, null, null, null],
-        "울산": [null, null, null, null, null],
-        "인천": [null, null, null, null, null],
-        "전남": [46.17, 47.63, null, null, null],
-        "전북": [null, null, 59.36, null, null],
-        "제주": [null, null, null, null, null],
-        "충남": [35.4, 38, 38.46, null, null],
-        "충북": [null, null, null, null, null]
+        "강원": [35.45, 33.65, 37.06, null, null],
+        "경기": [42.46, 42.16, 52.97, null, null],
+        "경남": [33.89, 42.44, 45.94, null, null],
+        "경북": [40.92, 35, 40, null, null],
+        "광주": [37.5, 39, 52, null, null],
+        "대구": [38.48, 41.6, 49.94, null, null],
+        "대전": [45, 45.5, 59, null, null],
+        "부산": [44.62, 45.45, 49.67, null, null],
+        "서울": [43.5, 43.17, 52.51, null, null],
+        "세종": [37, 27, 60, null, null],
+        "울산": [47, 47, 49, null, null],
+        "인천": [48, 43, 52, null, null],
+        "전남": [46.17, 41, 48, null, null],
+        "전북": [46, 47, 59.36, null, null],
+        "제주": [34, 36.5, 45.33, null, null],
+        "충남": [35.4, 39.32, 38.46, null, null],
+        "충북": [26, 25, 45.58, null, null]
       },
       cutoff: {
-        "강원": [33.5, 25, 33, null, null],
-        "경기": [38, 37, 40.5, null, null],
-        "경남": [22, 40.5, 42, null, null],
-        "경북": [38.5, null, null, null, null],
-        "광주": [38, null, null, null, null],
-        "대구": [33, 26.5, 49, null, null],
-        "대전": [null, null, null, null, null],
-        "부산": [31, 40.5, 55, null, null],
-        "서울": [39, 44.5, 49, null, null],
-        "세종": [null, null, null, null, null],
-        "울산": [null, null, null, null, null],
-        "인천": [null, null, null, null, null],
-        "전남": [45, 48.5, null, null, null],
-        "전북": [null, null, 59.5, null, null],
-        "제주": [null, null, null, null, null],
-        "충남": [30.5, 37, 38.5, null, null],
-        "충북": [null, null, null, null, null]
-      },
-      takers: {
-        "강원": [49, 31, 24, null, null],
-        "경기": [203, 131, 100, null, null],
-        "경남": [37, 25, 18, null, null],
-        "경북": [39, 24, 19, null, null],
-        "광주": [3, 2, 2, null, null],
-        "대구": [34, 24, 17, null, null],
-        "대전": [3, 1, 1, null, null],
-        "부산": [48, 33, 24, null, null],
-        "서울": [101, 65, 50, null, null],
-        "세종": [3, 1, 1, null, null],
-        "울산": [15, 10, 8, null, null],
-        "인천": [55, 36, 27, null, null],
-        "전남": [36, 23, 17, null, null],
-        "전북": [15, 8, 7, null, null],
-        "제주": [7, 3, 3, null, null],
-        "충남": [46, 31, 24, null, null],
-        "충북": [13, 9, 6, null, null]
+        "강원": [33, 25, 33, null, null],
+        "경기": [38, 55, 61, null, null],
+        "경남": [42, 43, 52, null, null],
+        "경북": [37, 35, 40, null, null],
+        "광주": [38, 39, 52, null, null],
+        "대구": [36.59, 34.93, 49, null, null],
+        "대전": [45, 45.5, 59, null, null],
+        "부산": [51, 45, 60, null, null],
+        "서울": [35, 38, 50.57, null, null],
+        "세종": [37, 27, 60, null, null],
+        "울산": [47, 47, 49, null, null],
+        "인천": [48, 43, 52, null, null],
+        "전남": [45, 50, 48, null, null],
+        "전북": [46, 47, 59.5, null, null],
+        "제주": [34, 36.5, 49.5, null, null],
+        "충남": [30.5, 39, 38.5, null, null],
+        "충북": [26, 25, 55.5, null, null]
       }
     }
   };
@@ -1175,9 +1138,6 @@
   }
   recomputeCoverage();
 
-  const takersOf = (round) =>
-    REGIONS.reduce((a, r) => a + (DATA.takers[r][round] || 0), 0);
-
   REGIONS.forEach((r) => {
     const opt = document.createElement("option");
     opt.value = r;
@@ -1271,7 +1231,7 @@
       b.classList.toggle("is-pending", pending);
       b.title = pending
         ? `${i + 1}회차 · ${PENDING}`
-        : `${i + 1}회차 · ${REGIONS.length}개 중 ${COVERAGE[state.metric][i]}곳 집계 · 응시 ${takersOf(i)}명`;
+        : `${i + 1}회차 · ${REGIONS.length}개 중 ${COVERAGE[state.metric][i]}곳 집계`;
     });
   }
 
@@ -1317,7 +1277,6 @@
 
     el.rankNote.innerHTML = vals.length
       ? `<span class="nw">집계 <b>${vals.length}</b>개 지역</span> · ` +
-        `<span class="nw">응시 <b>${takersOf(round)}</b>명</span> · ` +
         `<span class="nw">전국 평균 <b>${fmt(mean)}</b>점</span> · ` +
         `<span class="nw">최고 <b>${fmt(Math.max(...vals))}</b>점</span> · ` +
         `<span class="nw">최저 <b>${fmt(Math.min(...vals))}</b>점</span>`
@@ -1374,10 +1333,9 @@
       val.className = "val";
       val.textContent = v === null ? "수집 중" : fmt(v);
 
-      const n = DATA.takers[region][round];
       btn.title = v === null
         ? `${region} · 수집 중`
-        : `${region} · ${LABEL[metric]} ${fmt(v)}점 · 응시 ${n}명`;
+        : `${region} · ${LABEL[metric]} ${fmt(v)}점`;
 
       btn.append(rank, name, track, val);
       btn.addEventListener("click", () => {
@@ -1405,7 +1363,7 @@
   function renderChart(avg, cut) {
     const all = [...avg, ...cut].filter((v) => v !== null);
     if (!all.length) {
-      el.chart.innerHTML = '<p class="empty-msg">이 지역은 5개 회차 모두 응시 표본이 없습니다.</p>';
+      el.chart.innerHTML = '<p class="empty-msg">이 지역은 5개 회차 모두 집계된 표본이 없습니다.</p>';
       el.legendGap.hidden = true;
       el.legendMine.hidden = true;
       return;
@@ -1525,14 +1483,6 @@
           row.append(key, val);
           box.appendChild(row);
         });
-
-        const n = DATA.takers[state.region][i];
-        if (n) {
-          const t = document.createElement("div");
-          t.className = "box-takers";
-          t.textContent = `응시 ${n}명`;
-          box.appendChild(t);
-        }
 
         if (state.score !== null && cut[i] !== null) {
           const d = state.score - cut[i];
@@ -1943,7 +1893,7 @@
     },
     render: (n) => {
       const r = state.round, m = state.metric;
-      const avg = DATA.average[n][r], cut = DATA.cutoff[n][r], tk = DATA.takers[n][r];
+      const avg = DATA.average[n][r], cut = DATA.cutoff[n][r];
       const main = m === "average" ? avg : cut;
       const head = `${r + 1}회차 ${LABEL[m]}`;
       const pending = isPending(r);
@@ -1956,7 +1906,6 @@
       if (!pending) {
         rows.push(["평균 점수", avg === null ? "수집 중" : fmt(avg) + "점"]);
         rows.push(["1배수컷", cut === null ? "수집 중" : fmt(cut) + "점"]);
-        rows.push(["응시 인원", tk ? tk + "명" : "수집 중"]);
         const base = cut !== null ? cut : avg;
         if (state.score !== null && base !== null) {
           const d = state.score - base;
