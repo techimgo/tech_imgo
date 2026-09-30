@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="초등임용 성적분석">
 <link rel="stylesheet" href="common.css">
+<script src="kmap.js"></script>
 </head><body>
 <div class="site-nav-shell"><nav class="site-nav" aria-label="데이터 종류 선택"><a href="real.html" class="">실제 시험 데이터</a><a href="mock.html" class="is-on">모의고사 데이터</a><a href="expected-2027.html" class="">2027 예상</a></nav></div>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -880,6 +881,14 @@
     </div>
   </section>
 
+  <section class="panel" id="map-panel" aria-label="지역 지도">
+    <div class="panel-head">
+      <h2>지도에서 지역 선택</h2>
+      <p class="note">지역을 누르면 위에서 고른 회차·지표 기준의 점수가 나오고, 아래 그래프와 내 성적도 그 지역으로 바뀌어요.</p>
+    </div>
+    <div id="kmap-mount"></div>
+  </section>
+
   <div class="grid">
     <section class="panel" id="rank-panel">
       <div class="panel-head">
@@ -1548,6 +1557,7 @@
     }
   }
 
+  let km = null;
   function renderDetailNote() {
     const got = DATA.average[state.region].filter((v) => v !== null);
     const parts = [];
@@ -1556,6 +1566,7 @@
     el.detailNote.innerHTML = parts
       .map((t) => `<span class="nw">${t}</span>`)
       .join(" · ");
+    if (km) km.select(state.region);
   }
 
   function renderDetail() {
@@ -1922,6 +1933,42 @@
     }
   });
   markRounds();
+    km = KMap.mount("#kmap-mount", {
+    initial: state.region,
+    onSelect: (n) => {
+      state.region = n;
+      el.myRegion.value = n;
+      store.save();
+      renderAll();
+    },
+    render: (n) => {
+      const r = state.round, m = state.metric;
+      const avg = DATA.average[n][r], cut = DATA.cutoff[n][r], tk = DATA.takers[n][r];
+      const main = m === "average" ? avg : cut;
+      const head = `${r + 1}회차 ${LABEL[m]}`;
+      const pending = isPending(r);
+      const big = pending
+        ? { label: head, value: "—", sub: PENDING }
+        : main === null
+          ? { label: head, value: "수집 중", sub: "표본이 충분해지면 업데이트돼요" }
+          : { label: head, value: fmt(main) + "점", sub: `전국 ${REGIONS.length}개 지역 중 ${myRank ? myRank + "위" : "순위 집계 전"}` };
+      const rows = [];
+      if (!pending) {
+        rows.push(["평균 점수", avg === null ? "수집 중" : fmt(avg) + "점"]);
+        rows.push(["1배수컷", cut === null ? "수집 중" : fmt(cut) + "점"]);
+        rows.push(["응시 인원", tk ? tk + "명" : "수집 중"]);
+        const base = cut !== null ? cut : avg;
+        if (state.score !== null && base !== null) {
+          const d = state.score - base;
+          rows.push([`내 점수 ${cut !== null ? "− 컷" : "− 평균"}`, `<i class="${d >= 0 ? "good" : "bad"}">${signed(d)}</i>`]);
+        }
+      }
+      const got = DATA.average[n].filter((v) => v !== null).length;
+      rows.push(["집계 회차", got ? `${got}개 회차` : "없음"]);
+      return KMap.card({ title: n, big, rows });
+    }
+  });
+
   renderAll();
 </script>
 
