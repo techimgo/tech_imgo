@@ -1,6 +1,6 @@
 /* kmap.js — 대한민국 17개 시·도 백지도 (공용)
  * 사용법:
- *   <link rel="stylesheet" href="common.css"><script src="kmap.js"></script>
+ *   <script src="kmap.js"></script>   (스타일은 이 파일이 스스로 넣으므로 CSS 파일 불필요)
  *   <div id="kmap-mount"></div>
  *   const km = KMap.mount('#kmap-mount', {
  *     initial: '서울',
@@ -12,6 +12,8 @@
  * 지역 이름: 서울 경기 인천 강원 충북 충남 대전 세종 경북 경남 대구 울산 부산 전북 전남 광주 제주
  */
 (function(){
+  const CSS=`/* Shared Korea map (kmap.js) — 페이지가 정의한 CSS 변수를 쓰되, 없으면 fallback */ .mapbox{display:grid;grid-template-columns:minmax(0,290px) 1fr;gap:18px;align-items:start} @media(max-width:640px){.mapbox{grid-template-columns:1fr}} .kmap{width:100%;max-width:290px;height:auto;display:block;margin:0 auto} .kmap .rg{fill:var(--surface-2,#fafcfb);stroke:var(--line-2,#c3d1cb);stroke-width:.8;stroke-linejoin:round;cursor:pointer;transition:fill .12s;outline:none} .kmap .rg:hover{fill:var(--avg-soft,#07e29e2e)} .kmap .rg.is-me{fill:var(--cut2-soft,var(--warn-soft,#b8503f1a))} .kmap .rg:focus-visible{stroke:var(--avg-ink,#05815c);stroke-width:1.6} .kmap .mhl{fill:none;stroke:var(--cut2,var(--warn,#b8503f));stroke-width:1.8;stroke-linejoin:round;pointer-events:none} .kmap .lb{font:800 9px var(--sans,sans-serif);fill:var(--ink-2,#56655f);text-anchor:middle;pointer-events:none} .kmap .lb.sm2{font-size:6.5px} .kmap-note{margin:0;color:var(--ink-3,#869590);font-size:12.5px} .mcard{border:1px solid var(--line,#dde6e2);border-radius:14px;padding:16px;background:var(--surface,#fff);display:flex;flex-direction:column;gap:12px} .mcard h3{margin:0;font-size:18px;font-weight:800} .mcard h3 small{font-size:11.5px;color:var(--cut2,var(--warn,#b8503f));font-weight:700;margin-left:4px} .mbig{background:var(--ink,#0e1a16);color:#fff;border-radius:12px;padding:12px 14px} .mbig small{display:block;font-size:11.5px;color:#9fb3ab;font-weight:700} .mbig b{display:block;font-family:var(--mono,monospace);font-size:30px;line-height:1.2} .mbig span{font-size:12px;color:#9fb3ab} .mcard dl{margin:0;display:flex;flex-direction:column} .mcard dl>div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line,#dde6e2);font-size:13px} .mcard dt{color:var(--ink-3,#869590);font-weight:700;flex:none} .mcard dd{margin:0;text-align:right;font-family:var(--mono,monospace);font-variant-numeric:tabular-nums} .mcard dd small{font-family:var(--sans,sans-serif);font-size:11.5px;color:var(--ink-2,#56655f)} .mcard dd i{font-style:normal} .mcard .up{color:var(--cut2,var(--warn,#b8503f))}.mcard .dn{color:var(--avg-ink,#05815c)} .mcard .good{color:var(--avg-ink,#05815c)}.mcard .bad{color:var(--cut2,var(--warn,#b8503f))} `;
+  function injectCSS(){if(document.getElementById('kmap-style'))return;const st=document.createElement('style');st.id='kmap-style';st.textContent=CSS;document.head.appendChild(st)}
 const V={P1:[126.65,37.95],P2:[127.05,38.25],B1:[127.3,38.2],B2:[127.5,37.9],B3:[127.7,37.65],B4:[127.75,37.45],B5:[127.65,37.3],C1:[127.55,37.12],C2:[127.35,37.0],C3:[127.0,36.95],C4:[126.85,36.98],G1:[126.7,37.15],G2:[126.6,37.35],G3:[126.55,37.65],
 d1:[127.7,38.3],d2:[128.1,38.3],d3:[128.37,38.62],E1:[128.6,38.1],E2:[128.95,37.75],E3:[129.1,37.5],E4:[129.35,37.25],K1:[129.3,37.08],K2:[128.9,37.05],K3:[128.5,37.0],H1:[128.2,37.15],H2:[127.9,37.3],
 Q1:[128.4,36.85],Q2:[128.25,36.7],Q3:[128.05,36.45],Q4:[127.95,36.0],Q5:[127.6,36.05],Q6:[127.4,36.2],Q7:[127.35,36.5],Q8:[127.3,36.8],
@@ -50,6 +52,7 @@ function card(o){
 function delta(v,digits){const d=digits==null?2:digits;return `<i class="${v>0?'up':v<0?'dn':''}">${v>0?'▲':v<0?'▼':''}${Math.abs(v).toFixed(d)}</i>`}
 function mount(target,opt){
   opt=opt||{};
+  injectCSS();
   const host=typeof target=='string'?document.querySelector(target):target;
   if(!host)throw new Error('KMap: mount target not found');
   host.innerHTML='<div class="mapbox"><svg class="kmap" viewBox="0 0 272 510" role="group" aria-label="대한민국 지역 백지도"></svg><div class="mcard" aria-live="polite"></div></div>'+
