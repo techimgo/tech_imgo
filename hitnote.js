@@ -27,6 +27,12 @@
 .promo-link .promo{transition:filter .15s}
 .promo-link:hover .promo{filter:brightness(.97)}
 .promo-link:focus-visible{outline:2px solid #1d3924;outline-offset:3px}
+.promo-cta{flex:none;margin-left:auto;position:relative;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:999px;background:#1d3924;color:#fff;font-size:12.5px;font-weight:800;line-height:1;white-space:nowrap;z-index:1}
+.promo-arrow{display:inline-block;font-weight:800}
+.promo-ring{position:absolute;inset:-2px;border-radius:999px;border:2px solid #1d3924;opacity:0;pointer-events:none}
+.promo-cursor{position:absolute;left:50%;top:50%;width:24px;height:24px;margin:-2px 0 0 -2px;pointer-events:none;opacity:0;transform-origin:0 0;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));z-index:2}
+.promo-link:hover .promo-cta{background:#0f2415}
+@media(max-width:480px){.promo-cta{padding:7px 10px;font-size:11.5px}}
 @media(max-width:480px){.promo{padding:12px 14px;gap:10px}.promo-mark{font-size:17px}.promo-title{font-size:13.5px}.promo-sub{font-size:11.5px}}
 `;
   function injectCSS(id,css){
@@ -72,6 +78,11 @@
     mark.appendChild(line);
     const sheen=document.createElement('span');sheen.className='promo-sheen';sheen.setAttribute('aria-hidden','true');
     p.insertBefore(sheen,p.firstChild);
+
+    // 클릭 유도 버튼 (동작 줄이기 설정이어도 정적으로 보여줘요)
+    const cta=document.createElement('span');cta.className='promo-cta';cta.setAttribute('aria-hidden','true');
+    cta.innerHTML='<span>지금 보기</span><span class="promo-arrow">\u203A</span>';
+    p.appendChild(cta);
     if(reduce)return;
 
     // 하나의 흐름: 배너 등장 → Technical 밑줄 → 제목 → 날짜 형광펜 → 설명 문구 → 이후 은은한 빛 스침
@@ -89,6 +100,39 @@
       {duration:800,delay:850,easing:'ease-out',fill:'backwards'});
     sheen.animate([{transform:'translateX(-140%) skewX(-18deg)'},{transform:'translateX(420%) skewX(-18deg)'}],
       {duration:1300,delay:2000,endDelay:5000,iterations:Infinity,easing:'ease-in-out'});
+
+    // 클릭 유도: 마우스 커서가 버튼으로 다가와 '톡' 누르고 물결이 퍼지는 동작을 반복
+    const ring=document.createElement('i');ring.className='promo-ring';ring.setAttribute('aria-hidden','true');
+    const cur=document.createElement('span');cur.className='promo-cursor';cur.setAttribute('aria-hidden','true');
+    cur.innerHTML='<svg viewBox="0 0 24 24" width="24" height="24"><path d="M3 2.5v16l4.3-3.9 3 6.9 2.9-1.3-3-6.8h6z" fill="#fff" stroke="#1d3924" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+    cta.appendChild(ring);cta.appendChild(cur);
+    const arrow=cta.querySelector('.promo-arrow');
+    const loop={duration:5200,delay:2600,iterations:Infinity,easing:'ease-in-out'};
+    const curAnim=cur.animate([
+      {opacity:0,transform:'translate(40px,34px) scale(1)',offset:0},
+      {opacity:1,transform:'translate(30px,24px) scale(1)',offset:.1},
+      {opacity:1,transform:'translate(0,0) scale(1)',offset:.4},
+      {opacity:1,transform:'translate(0,0) scale(.82)',offset:.46},
+      {opacity:1,transform:'translate(0,0) scale(1)',offset:.54},
+      {opacity:1,transform:'translate(0,0) scale(1)',offset:.7},
+      {opacity:0,transform:'translate(14px,12px) scale(1)',offset:.84},
+      {opacity:0,transform:'translate(40px,34px) scale(1)',offset:1}],loop);
+    const ctaAnim=cta.animate([
+      {transform:'scale(1)',offset:0},{transform:'scale(1)',offset:.43},
+      {transform:'scale(.92)',offset:.47},{transform:'scale(1.06)',offset:.56},
+      {transform:'scale(1)',offset:.64},{transform:'scale(1)',offset:1}],loop);
+    const ringAnim=ring.animate([
+      {opacity:0,transform:'scale(.9)',offset:0},{opacity:0,transform:'scale(.9)',offset:.45},
+      {opacity:.7,transform:'scale(.95)',offset:.47},
+      {opacity:0,transform:'scale(1.5,1.9)',offset:.68},{opacity:0,transform:'scale(1.5,1.9)',offset:1}],loop);
+    arrow.animate([{transform:'translateX(0)'},{transform:'translateX(3px)'}],
+      {duration:700,delay:2000,direction:'alternate',iterations:Infinity,easing:'ease-in-out',fill:'backwards'});
+    // 실제로 마우스를 올리거나 키보드로 이동하면 데모 동작은 잠시 멈춰요
+    const host=p.closest('a')||p,all=[curAnim,ctaAnim,ringAnim];
+    const stop=()=>{all.forEach(a=>{a.pause();a.currentTime=0});cur.style.visibility='hidden'};
+    const go=()=>{cur.style.visibility='';all.forEach(a=>a.play())};
+    host.addEventListener('pointerenter',stop);host.addEventListener('pointerleave',go);
+    host.addEventListener('focusin',stop);host.addEventListener('focusout',go);
   }
 
   /* ---------- 제목 한 줄 맞춤 (mock.html의 fitTitle과 동일) ---------- */
