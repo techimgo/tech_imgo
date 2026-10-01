@@ -1,5 +1,6 @@
 /* hitnote.js — 적중노트 배너 + 헤더 공용 스크립트 (Web Animations API)
  * 페이지 맨 아래에 <script src="hitnote.js"></script> 한 줄이면 돼요.
+ *  - 배너 전체는 https://link.inpock.co.kr/tech_imgo 로 새 창(target=_blank)에서 열려요.
  *  - <header> 안에 적중노트 배너(.promo)가 없으면 mock.html과 같은 배너를 만들어 넣고,
  *    이미 있으면(mock.html) 그대로 두고 움직임만 입혀요.
  *  - h1[data-fit-title] : 제목이 한 줄에 딱 맞게 글자 크기를 자동 조절해요.
@@ -22,6 +23,10 @@
 .promo-date{background:linear-gradient(transparent 60%,rgba(255,255,255,.7) 60%) no-repeat;background-size:100% 100%}
 .promo-line{position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:#1d3924;transform-origin:left}
 .promo-sheen{position:absolute;top:0;bottom:0;left:0;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:translateX(-140%) skewX(-18deg);pointer-events:none}
+.promo-link{display:block;color:inherit;text-decoration:none;border-radius:14px;-webkit-tap-highlight-color:transparent}
+.promo-link .promo{transition:filter .15s}
+.promo-link:hover .promo{filter:brightness(.97)}
+.promo-link:focus-visible{outline:2px solid #1d3924;outline-offset:3px}
 @media(max-width:480px){.promo{padding:12px 14px;gap:10px}.promo-mark{font-size:17px}.promo-title{font-size:13.5px}.promo-sub{font-size:11.5px}}
 `;
   function injectCSS(id,css){
@@ -30,6 +35,17 @@
   }
 
   /* ---------- 적중노트 배너 ---------- */
+  const PROMO_URL='https://link.inpock.co.kr/tech_imgo';
+
+  /* 배너 전체를 새 창으로 열리는 링크로 감싸요 (이미 링크 안에 있으면 그대로 둬요) */
+  function linkify(p){
+    if(!p||p.closest('a'))return;
+    const a=document.createElement('a');
+    a.className='promo-link';a.href=PROMO_URL;a.target='_blank';a.rel='noopener noreferrer';
+    a.setAttribute('aria-label','적중노트 안내 페이지 열기 (새 창)');
+    p.parentNode.insertBefore(a,p);a.appendChild(p);
+    p.removeAttribute('role');p.removeAttribute('aria-label');
+  }
   function ensureBanner(){
     const hdr=document.querySelector('header');
     if(!hdr)return null;
@@ -43,6 +59,7 @@
         '<p class="promo-sub">변화된 초등임용 환경에 맞춰, 더 강력해진 적중노트가 찾아옵니다.</p></div>';
       hdr.appendChild(p);
     }
+    linkify(p);
     return p;
   }
 
