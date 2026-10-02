@@ -152,6 +152,9 @@
   .rng li.is-me .dot{background:var(--cut2);box-shadow:0 0 0 1px var(--cut2)}
   .rng .prev{position:absolute;top:2px;bottom:2px;width:2px;background:var(--cut)}
   .rng .val{font-family:var(--mono);font-size:12.5px;font-weight:700;text-align:right}
+  .rng li.is-nat{cursor:default;padding-bottom:10px;border-bottom:1px dashed var(--line-2)}
+  .rng li.is-nat .name{color:var(--ink);font-weight:800}
+  .rng li.is-nat .val{color:var(--ink)}
   .axis{display:flex;justify-content:space-between;margin:0 40px 0 46px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
   .legend-inline .i-prev{width:2px;height:10px;border-radius:0;background:var(--cut)}
   .legend-inline .i-band{background:var(--avg-soft);border:1px solid var(--avg)}
@@ -180,6 +183,34 @@
   .tbl.sortable th[aria-sort="ascending"] button::after{content:"▲";opacity:1;color:var(--avg-ink)}
   .tbl.sortable th[aria-sort="descending"] button::after{content:"▼";opacity:1;color:var(--avg-ink)}
   .tbl.sortable td.hi{font-weight:700;color:var(--ink)}
+
+  .nat-h{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+  .nat-h small{display:block;font-size:11.5px;color:var(--ink-3);font-weight:700}
+  .nat-h b{display:block;font-family:var(--mono);font-size:min(40px,10vw);line-height:1.15;font-variant-numeric:tabular-nums}
+  .nat-h .r{text-align:right;font-size:12px;color:var(--ink-2)}
+  .nat-h .r b{display:inline;font-size:18px;color:var(--avg-ink)}
+  .gauge{padding:0 8px}
+  .g-top,.g-bot{position:relative;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+  .g-top{height:32px}.g-bot{height:22px;margin-top:4px}
+  .g-top span,.g-bot span{position:absolute;transform:translateX(-50%);text-align:center;line-height:1.25;white-space:nowrap}
+  .g-top span{bottom:2px}
+  .g-top small{display:block;font-family:var(--sans);font-size:10px;color:var(--ink-3);font-weight:700}
+  .g-bot span.e0{transform:none}.g-bot span.e1{transform:translateX(-100%)}
+  .g-bot span.hl{font-weight:700;color:var(--cut2)}
+  .g-track{position:relative;height:26px;background:var(--surface-2);border-radius:8px;border:1px solid var(--line)}
+  .g-band{position:absolute;top:3px;bottom:3px;background:var(--avg-soft);border:1px solid var(--avg);border-radius:6px}
+  .g-tick{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--cut)}
+  .g-tick.now{background:var(--ink-3)}
+  .g-dot{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--cut2);border:2px solid #fff;box-shadow:0 0 0 1px var(--cut2)}
+  .legend-inline .i-now{width:2px;height:10px;border-radius:0;background:var(--ink-3)}
+  .legend-inline .i-dot{background:var(--cut2);border-radius:50%}
+  .scs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .sc{border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:10px 6px;text-align:center}
+  .sc span{display:block;font-size:11.5px;color:var(--ink-2);line-height:1.45}
+  .sc em{display:block;font-style:normal;font-family:var(--mono);font-size:20px;font-weight:700;margin:2px 0}
+  .sc i{display:block;font-style:normal;font-size:11px;color:var(--ink-3)}
+  .nat-note{margin:0;font-size:13px;color:var(--ink-2);line-height:1.7}
+  .nat-note b{color:var(--ink)}
 @media(max-width:460px){.brand{gap:10px}.logo{width:34px;height:34px;border-radius:9px}}
 </style></head><body>
 <div class="site-nav-shell"><nav class="site-nav" aria-label="데이터 종류 선택"><a href="real.html" class="">실제 시험 데이터</a><a href="mock.html" class="">모의고사 데이터</a><a href="expected-2027.html" class="is-on">2027 예상</a></nav></div>
@@ -192,26 +223,29 @@
     <p class="lede">2027학년도 초등임용 예상 경쟁률과 합격선 자료를 확인합니다.</p>
   </header>
   <section class="view is-on" aria-label="2027 예상">
-<div class="upd"><i></i>2027학년도 예상 자료는 원서접수 주간 매일 20시에 업데이트돼요. (2026년 10월 1일 업데이트)</div>
+<div class="upd"><i></i>2027학년도 예상 자료는 원서접수 주간 매일 20시에 업데이트돼요. (2026년 10월 2일 업데이트)</div>
 <div class="kpis" id="kpis"></div>
-<p class="note" style="margin:-6px 2px 0;color:var(--ink-3);font-size:12px">※ 2027 모집 정원(전국 2,549명, 2026 대비 −11%) 기준이며, 원서접수 3일차(9/30)까지의 누적 지원 현황을 반영했어요.</p>
+<p class="note" style="margin:-6px 2px 0;color:var(--ink-3);font-size:12px">※ 2027 모집 정원(전국 2,549명, 2026 대비 −11%) 기준이며, 원서접수 4일차(10/1)까지의 누적 지원 현황을 반영했어요.</p>
+
+<div class="panel"><div class="panel-head"><h2>전국 예상 경쟁률, 범위로 보세요</h2><p class="note">4일차(10/1)까지 접수를 반영했어요. 남은 변수는 마지막 날(5일차) 접수량이에요.</p></div>
+<div id="nat"></div></div>
 
 <div class="panel"><div class="panel-head"><h2>지역별 예상 경쟁률 지도</h2><p class="note">지역을 누르면 예상 경쟁률과 접수 현황이 나와요. 여기서 고른 지역은 아래 그래프에도 함께 적용돼요.</p></div>
 <div id="kmap-mount"></div></div>
 
-<div class="panel"><div class="panel-head"><h2>2027 초등임용 누적 지원자 수</h2><p class="note">2027 원서접수 누적 지원 인원이에요(1일차 9/28, 2일차 9/29, 3일차 9/30). 2026년 같은 일차와 비교해요. 열 제목을 누르면 오름차순·내림차순으로 바뀌어요.</p></div>
-<div class="row-controls"><div class="seg" id="dayseg" role="group" aria-label="일차 선택"><button type="button" data-day="1">1일차</button><button type="button" data-day="2">2일차</button><button type="button" data-day="3" class="is-on">3일차 누적</button></div><div class="seg" id="d1dir" role="group" aria-label="정렬 방향"><button type="button" data-d="-1" class="is-on">내림차순</button><button type="button" data-d="1">오름차순</button></div><select class="plain" id="d1key" aria-label="정렬 기준"><option value="a27">2027 지원</option><option value="a26">2026 지원</option><option value="g">증감률</option><option value="r1">접수 경쟁률</option><option value="m27">2027 모집</option><option value="n">지역명</option></select></div>
+<div class="panel"><div class="panel-head"><h2>2027 초등임용 누적 지원자 수</h2><p class="note">2027 원서접수 누적 지원 인원이에요(1일차 9/28, 2일차 9/29, 3일차 9/30, 4일차 10/1). 2026년 같은 일차와 비교해요. 열 제목을 누르면 오름차순·내림차순으로 바뀌어요.</p></div>
+<div class="row-controls"><div class="seg" id="dayseg" role="group" aria-label="일차 선택"><button type="button" data-day="1">1일차</button><button type="button" data-day="2">2일차</button><button type="button" data-day="3">3일차</button><button type="button" data-day="4" class="is-on">4일차 누적</button></div><div class="seg" id="d1dir" role="group" aria-label="정렬 방향"><button type="button" data-d="-1" class="is-on">내림차순</button><button type="button" data-d="1">오름차순</button></div><select class="plain" id="d1key" aria-label="정렬 기준"><option value="a27">2027 지원</option><option value="a26">2026 지원</option><option value="g">증감률</option><option value="r1">접수 경쟁률</option><option value="m27">2027 모집</option><option value="n">지역명</option></select></div>
 <div class="tbl sortable"><table id="d1tbl"></table></div>
 <p class="note" style="margin:0;color:var(--ink-3);font-size:12.5px">※ 접수 경쟁률 = 해당 일차 누적 지원자 ÷ 2027 모집이에요(최종 경쟁률이 아니에요). 모집이 2~3명인 광주·대전·세종은 증감 폭이 크게 나와요.</p></div>
 
-<div class="panel"><div class="panel-head"><h2>전일 대비 예상 경쟁률 변화</h2><p class="note">3일차 접수까지 반영해도 전국 예상 경쟁률은 2.95로 1일차(2.95)·2일차(2.96) 반영 때와 거의 같아요. 1~3일차 신호가 일관돼요. 눈에 띄게 바뀐 곳은 소규모 3개 지역과 전북이에요. 증감폭은 2일차 반영 대비예요.</p></div><div class="tbl"><table id="cmp"></table></div></div>
+<div class="panel"><div class="panel-head"><h2>전일 대비 예상 경쟁률 변화</h2><p class="note">4일차 접수까지 반영하니 전국 예상 경쟁률이 2.95에서 2.88로 낮아졌어요. 전국 누적 접수가 작년 같은 시점보다 많은 정도가 1~3일차 +15~16%에서 4일차 +10%로 줄었기 때문이에요. 서울·충남·충북·경북은 내려가고 제주·부산·경기는 올랐어요. 증감폭은 3일차 반영 대비예요.</p></div><div class="tbl"><table id="cmp"></table></div></div>
 
-<div class="panel"><div class="panel-head"><h2>내 지역, 얼마나 몰릴까?</h2><p class="note">점=2027 예상, 초록 띠=80% 예상 범위, 검은 선=2026 실제. 지역을 누르면 아래에 자세히 나와요.</p></div>
+<div class="panel"><div class="panel-head"><h2>내 지역, 얼마나 몰릴까?</h2><p class="note">점=2027 예상, 초록 띠=80% 예상 범위, 검은 선=2026 실제. 지역을 누르면 아래에 자세히 나와요. 맨 위 ‘전국’은 17개 지역 합계 기준이며 같은 눈금이에요.</p></div>
 <div class="legend-inline"><span><i></i>2027 예상</span><span><i class="i-band"></i>80% 범위</span><span><i class="i-prev"></i>2026</span></div>
 <ul class="rng" id="rng"></ul><div class="axis" id="axis"></div>
-<p class="note" style="margin:0;color:var(--ink-3);font-size:12.5px">※ 서울이 가장 높고, 나머지 지역은 대부분 2.4~3.1 사이에 몰려 있어 순위 차이가 오차 범위 안이에요. 제주는 모집이 24명뿐이라 변동성을 더 크게 잡아 범위가 넓어요.</p></div>
+<p class="note" style="margin:0;color:var(--ink-3);font-size:12.5px">※ 제주·부산·서울이 3.2~3.4로 높고, 나머지 지역은 대부분 2.3~3.0 사이에 몰려 있어 순위 차이가 오차 범위 안이에요. 제주는 모집이 24명뿐이라 변동성을 더 크게 잡아 범위가 넓어요.</p></div>
 
-<div class="panel"><div class="panel-head"><h2>극단값 주의 지역</h2><p class="note">모집이 2~3명뿐이라 지원자 수 추정에 크게 좌우돼요. 과거 지원자는 26~57명, 3일차 누적 접수 인원과 기존 가정(45명)을 섞어 38~40명으로 추정했어요.</p></div><div class="smalls" id="smalls"></div></div>
+<div class="panel"><div class="panel-head"><h2>극단값 주의 지역</h2><p class="note">모집이 2~3명뿐이라 지원자 수 추정에 크게 좌우돼요. 과거 지원자는 26~57명, 4일차 누적 접수 인원과 기존 가정(45명)을 섞어 29~36명으로 추정했어요.</p></div><div class="smalls" id="smalls"></div></div>
 
 <div class="panel"><div class="detail-h"><div class="panel-head"><h2>지역별 5년 추이</h2></div><select class="plain" id="sel" aria-label="지역 선택"></select></div>
 <div class="chips" id="chips"></div><svg class="trend-chart" id="trend" viewBox="0 0 340 190" role="img" aria-label="경쟁률 추이"></svg>
@@ -220,23 +254,34 @@
 <div class="panel"><div class="panel-head"><h2>모집·경쟁률 한눈에 비교</h2><p class="note">2027 모집은 최신 정원 기준이에요.</p></div><div class="tbl"><table id="tbl"></table></div></div>
 
 <div class="panel"><div class="panel-head"><h2>수험생 체크포인트</h2></div><ul class="tips">
-<li><b>전국 지원자는 해마다 7,100~7,900명으로 비슷</b>했고, 모집이 줄면 경쟁률이 오르는 구조예요. 올해는 3일차 누적 접수가 작년 같은 시점보다 <b>약 15% 많아</b>(1일차 +15%, 2일차 +16%) 지원자를 약 7,517명으로 올려 잡았고, 경쟁률은 <b>약 2.95</b>로 예상돼요.</li>
+<li><b>전국 지원자는 해마다 7,100~7,900명으로 비슷</b>했고, 모집이 줄면 경쟁률이 오르는 구조예요. 올해는 4일차 누적 접수가 작년 같은 시점보다 <b>약 10% 많아</b>(1일차 +15%, 2일차 +16%, 3일차 +15%였다가 4일차에 증가세가 둔화) 지원자를 약 7,339명으로 조정했고, 경쟁률은 <b>약 2.88</b>로 예상돼요.</li>
 <li>수험생이 <b>모집 많은 지역으로 이동</b>하기 때문에, 모집이 늘어도 경쟁률이 크게 낮아지진 않아요.</li>
-<li>서울이 약 3.6으로 가장 높고 제주(3.1)·경북·부산(약 3.05)이 뒤따라요. 나머지는 대부분 2.5~3.0에 몰려 있어 <b>순위 구분이 어려워요.</b></li>
+<li>제주(3.4)·부산(3.3)·서울(3.2)이 가장 높고 경기(3.0)가 뒤따라요. 나머지는 대부분 2.3~2.9에 몰려 있어 <b>순위 구분이 어려워요.</b></li>
 <li>전년에 경쟁률이 높았던 지역은 다음 해 <b>일부 식는 경향</b>(평균회귀)이 있어요.</li>
-<li>과거 예측 오차는 평균 약 10%예요. 일차별 접수 비중은 2026년 한 해 자료뿐이라 오차가 더 클 수 있어요. 4~5일차 자료가 나오면 다시 반영해요.</li></ul></div>
+<li>과거 예측 오차는 평균 약 10%예요. 일차별 접수 비중은 2026년 한 해 자료뿐이라 오차가 더 클 수 있어요. 5일차(최종) 자료가 나오면 다시 반영해요.</li></ul></div>
 
-<p class="disclaimer">2027 모집 정원은 지역별 최신 정원(전국 2,549명)을 반영했어요. 정원이 바뀌면 예상치도 달라져요. 4개 모형(지원자 증감·합격선 포함·전국 대비 위치 유지·일차별 접수 기반)의 기하평균으로 산출했고, 표본이 5개 연도뿐이라 참고용입니다. 80% 범위는 예측값×exp(±1.28σ)로 계산했어요.</p>
+<p class="disclaimer">2027 모집 정원은 지역별 최신 정원(전국 2,549명)을 반영했어요. 정원이 바뀌면 예상치도 달라져요. 4개 모형(지원자 증감·합격선 포함·전국 대비 위치 유지·일차별 접수 기반)의 가중 기하평균으로 산출했고(4일차 기준 일차별 접수 기반 비중 약 76%), 표본이 5개 연도뿐이라 참고용입니다. 80% 범위는 예측값×exp(±1.28σ)로 계산했어요.</p>
 </section>
 <script>
-const D=[{"n": "광주", "s": true, "m26": 28, "r26": 5.14, "m27": 2, "e": 20, "ap": 40, "lo": 13.33, "hi": 28.89, "h": [[2022, 5, 9.6], [2023, 5, 7.4], [2024, 5, 9.2], [2025, 41, 3.98], [2026, 28, 5.14]], "a27": 7, "a26": 48, "b27": 18, "b26": 78, "p1": 17.5, "c27": 21, "c26": 98, "p2": 20.5}, {"n": "세종", "s": true, "m26": 6, "r26": 7.83, "m27": 3, "e": 12.67, "ap": 38, "lo": 8.44, "hi": 18.3, "h": [[2022, 72, 3.31], [2023, 64, 3.67], [2024, 9, 5.89], [2025, 36, 2.72], [2026, 6, 7.83]], "a27": 13, "a26": 12, "b27": 16, "b26": 24, "p1": 15.33, "c27": 18, "c26": 26, "p2": 13}, {"n": "대전", "s": true, "m26": 31, "r26": 4.39, "m27": 3, "e": 13, "ap": 39, "lo": 8.67, "hi": 18.78, "h": [[2022, 11, 4.1], [2023, 9, 2.89], [2024, 9, 6.33], [2025, 39, 3.1], [2026, 31, 4.39]], "a27": 13, "a26": 31, "b27": 18, "b26": 53, "p1": 15.33, "c27": 20, "c26": 70, "p2": 13.67}, {"n": "서울", "s": false, "m26": 195, "r26": 3.4, "m27": 247, "e": 3.57, "ap": 883, "lo": 2.95, "hi": 4.33, "h": [[2022, 201, 3.7], [2023, 107, 4.75], [2024, 101, 4.48], [2025, 244, 2.61], [2026, 195, 3.4]], "a27": 198, "a26": 177, "b27": 361, "b26": 326, "p1": 3.56, "c27": 481, "c26": 426, "p2": 3.58}, {"n": "울산", "s": false, "m26": 61, "r26": 2.49, "m27": 62, "e": 2.96, "ap": 184, "lo": 2.44, "hi": 3.59, "h": [[2022, 122, 2.15], [2023, 112, 2.04], [2024, 88, 2.13], [2025, 94, 1.86], [2026, 61, 2.49]], "a27": 49, "a26": 33, "b27": 81, "b26": 63, "p1": 2.96, "c27": 110, "c26": 76, "p2": 2.93}, {"n": "전남", "s": false, "m26": 121, "r26": 2.5, "m27": 137, "e": 2.86, "ap": 391, "lo": 2.36, "hi": 3.46, "h": [[2022, 187, 1.94], [2023, 151, 1.93], [2024, 138, 2.37], [2025, 143, 1.83], [2026, 121, 2.5]], "a27": 86, "a26": 48, "b27": 160, "b26": 88, "p1": 2.85, "c27": 214, "c26": 121, "p2": 2.88}, {"n": "충남", "s": false, "m26": 243, "r26": 2.41, "m27": 185, "e": 2.97, "ap": 549, "lo": 2.45, "hi": 3.6, "h": [[2022, 139, 2.39], [2023, 139, 2.13], [2024, 225, 2.04], [2025, 231, 2.01], [2026, 243, 2.41]], "a27": 115, "a26": 103, "b27": 206, "b26": 183, "p1": 2.93, "c27": 297, "c26": 241, "p2": 2.95}, {"n": "대구", "s": false, "m26": 72, "r26": 2.53, "m27": 121, "e": 2.57, "ap": 311, "lo": 2.12, "hi": 3.11, "h": [[2022, 46, 1.72], [2023, 27, 2.78], [2024, 28, 2.36], [2025, 67, 1.69], [2026, 72, 2.53]], "a27": 70, "a26": 63, "b27": 140, "b26": 109, "p1": 2.49, "c27": 178, "c26": 128, "p2": 2.55}, {"n": "인천", "s": false, "m26": 175, "r26": 2.46, "m27": 219, "e": 2.72, "ap": 595, "lo": 2.24, "hi": 3.29, "h": [[2022, 200, 2.3], [2023, 185, 2.2], [2024, 147, 2.59], [2025, 206, 1.93], [2026, 175, 2.46]], "a27": 151, "a26": 111, "b27": 260, "b26": 192, "p1": 2.72, "c27": 335, "c26": 253, "p2": 2.74}, {"n": "경북", "s": false, "m26": 271, "r26": 2.34, "m27": 167, "e": 3.05, "ap": 509, "lo": 2.52, "hi": 3.69, "h": [[2022, 328, 1.76], [2023, 317, 1.97], [2024, 253, 2.08], [2025, 293, 1.81], [2026, 271, 2.34]], "a27": 126, "a26": 108, "b27": 202, "b26": 181, "p1": 3.09, "c27": 264, "c26": 257, "p2": 3.09}, {"n": "부산", "s": false, "m26": 255, "r26": 2.29, "m27": 160, "e": 3.05, "ap": 487, "lo": 2.51, "hi": 3.69, "h": [[2022, 343, 2.14], [2023, 324, 2.15], [2024, 305, 2.29], [2025, 379, 2.01], [2026, 255, 2.29]], "a27": 166, "a26": 148, "b27": 284, "b26": 265, "p1": 3.07, "c27": 352, "c26": 345, "p2": 3.07}, {"n": "경기", "s": false, "m26": 995, "r26": 2.34, "m27": 815, "e": 2.91, "ap": 2369, "lo": 2.4, "hi": 3.52, "h": [[2022, 1385, 2.04], [2023, 1420, 2.08], [2024, 1224, 2.42], [2025, 1630, 1.93], [2026, 995, 2.34]], "a27": 671, "a26": 580, "b27": 1216, "b26": 1016, "p1": 2.89, "c27": 1604, "c26": 1365, "p2": 2.92}, {"n": "경남", "s": false, "m26": 123, "r26": 2.36, "m27": 141, "e": 2.7, "ap": 380, "lo": 2.22, "hi": 3.27, "h": [[2022, 156, 2.03], [2023, 138, 2.09], [2024, 164, 2.02], [2025, 169, 1.83], [2026, 123, 2.36]], "a27": 104, "a26": 73, "b27": 178, "b26": 134, "p1": 2.71, "c27": 221, "c26": 165, "p2": 2.7}, {"n": "제주", "s": false, "m26": 55, "r26": 2.15, "m27": 24, "e": 3.12, "ap": 75, "lo": 2.36, "hi": 4.14, "h": [[2022, 60, 1.85], [2023, 99, 1.92], [2024, 80, 2.16], [2025, 86, 1.88], [2026, 55, 2.15]], "a27": 15, "a26": 23, "b27": 51, "b26": 55, "p1": 3.02, "c27": 62, "c26": 74, "p2": 3.17}, {"n": "충북", "s": false, "m26": 72, "r26": 2.29, "m27": 69, "e": 2.67, "ap": 184, "lo": 2.2, "hi": 3.23, "h": [[2022, 80, 1.88], [2023, 74, 2.12], [2024, 30, 2.03], [2025, 77, 1.56], [2026, 72, 2.29]], "a27": 52, "a26": 44, "b27": 90, "b26": 73, "p1": 2.72, "c27": 129, "c26": 99, "p2": 2.66}, {"n": "강원", "s": false, "m26": 119, "r26": 2.22, "m27": 147, "e": 2.46, "ap": 362, "lo": 2.03, "hi": 2.98, "h": [[2022, 95, 2.84], [2023, 86, 2.97], [2024, 69, 4.03], [2025, 103, 2.31], [2026, 119, 2.22]], "a27": 86, "a26": 65, "b27": 136, "b26": 105, "p1": 2.47, "c27": 181, "c26": 143, "p2": 2.47}, {"n": "전북", "s": false, "m26": 53, "r26": 2.09, "m27": 47, "e": 2.56, "ap": 120, "lo": 2.11, "hi": 3.1, "h": [[2022, 56, 2.25], [2023, 41, 2.51], [2024, 38, 2.24], [2025, 102, 1.91], [2026, 53, 2.09]], "a27": 28, "a26": 26, "b27": 57, "b26": 37, "p1": 2.53, "c27": 67, "c26": 58, "p2": 2.66}], f=x=>x.toFixed(2), $=id=>document.getElementById(id);
+const D=[{"n": "광주", "s": true, "m26": 28, "r26": 5.14, "m27": 2, "e": 17.5, "ap": 35, "lo": 12, "hi": 25.28, "h": [[2022, 5, 9.6], [2023, 5, 7.4], [2024, 5, 9.2], [2025, 41, 3.98], [2026, 28, 5.14]], "a27": 7, "a26": 48, "b27": 18, "b26": 78, "p1": 17.5, "c27": 21, "c26": 98, "p2": 20.5, "p3": 20, "d27": 24, "d26": 106}, {"n": "세종", "s": true, "m26": 6, "r26": 7.83, "m27": 3, "e": 9.67, "ap": 29, "lo": 6.44, "hi": 13.96, "h": [[2022, 72, 3.31], [2023, 64, 3.67], [2024, 9, 5.89], [2025, 36, 2.72], [2026, 6, 7.83]], "a27": 13, "a26": 12, "b27": 16, "b26": 24, "p1": 15.33, "c27": 18, "c26": 26, "p2": 13, "p3": 12.67, "d27": 17, "d26": 32}, {"n": "대전", "s": true, "m26": 31, "r26": 4.39, "m27": 3, "e": 12, "ap": 36, "lo": 8.33, "hi": 17.33, "h": [[2022, 11, 4.1], [2023, 9, 2.89], [2024, 9, 6.33], [2025, 39, 3.1], [2026, 31, 4.39]], "a27": 13, "a26": 31, "b27": 18, "b26": 53, "p1": 15.33, "c27": 20, "c26": 70, "p2": 13.67, "p3": 13, "d27": 25, "d26": 97}, {"n": "서울", "s": false, "m26": 195, "r26": 3.4, "m27": 247, "e": 3.23, "ap": 797, "lo": 2.88, "hi": 3.61, "h": [[2022, 201, 3.7], [2023, 107, 4.75], [2024, 101, 4.48], [2025, 244, 2.61], [2026, 195, 3.4]], "a27": 198, "a26": 177, "b27": 361, "b26": 326, "p1": 3.56, "c27": 481, "c26": 426, "p2": 3.58, "p3": 3.57, "d27": 606, "d26": 537}, {"n": "울산", "s": false, "m26": 61, "r26": 2.49, "m27": 62, "e": 2.91, "ap": 181, "lo": 2.6, "hi": 3.26, "h": [[2022, 122, 2.15], [2023, 112, 2.04], [2024, 88, 2.13], [2025, 94, 1.86], [2026, 61, 2.49]], "a27": 49, "a26": 33, "b27": 81, "b26": 63, "p1": 2.96, "c27": 110, "c26": 76, "p2": 2.93, "p3": 2.96, "d27": 139, "d26": 106}, {"n": "전남", "s": false, "m26": 121, "r26": 2.5, "m27": 137, "e": 2.69, "ap": 369, "lo": 2.41, "hi": 3.01, "h": [[2022, 187, 1.94], [2023, 151, 1.93], [2024, 138, 2.37], [2025, 143, 1.83], [2026, 121, 2.5]], "a27": 86, "a26": 48, "b27": 160, "b26": 88, "p1": 2.85, "c27": 214, "c26": 121, "p2": 2.88, "p3": 2.86, "d27": 274, "d26": 176}, {"n": "충남", "s": false, "m26": 243, "r26": 2.41, "m27": 185, "e": 2.64, "ap": 489, "lo": 2.36, "hi": 2.96, "h": [[2022, 139, 2.39], [2023, 139, 2.13], [2024, 225, 2.04], [2025, 231, 2.01], [2026, 243, 2.41]], "a27": 115, "a26": 103, "b27": 206, "b26": 183, "p1": 2.93, "c27": 297, "c26": 241, "p2": 2.95, "p3": 2.97, "d27": 367, "d26": 361}, {"n": "대구", "s": false, "m26": 72, "r26": 2.53, "m27": 121, "e": 2.45, "ap": 296, "lo": 2.19, "hi": 2.74, "h": [[2022, 46, 1.72], [2023, 27, 2.78], [2024, 28, 2.36], [2025, 67, 1.69], [2026, 72, 2.53]], "a27": 70, "a26": 63, "b27": 140, "b26": 109, "p1": 2.49, "c27": 178, "c26": 128, "p2": 2.55, "p3": 2.57, "d27": 228, "d26": 154}, {"n": "인천", "s": false, "m26": 175, "r26": 2.46, "m27": 219, "e": 2.59, "ap": 567, "lo": 2.31, "hi": 2.9, "h": [[2022, 200, 2.3], [2023, 185, 2.2], [2024, 147, 2.59], [2025, 206, 1.93], [2026, 175, 2.46]], "a27": 151, "a26": 111, "b27": 260, "b26": 192, "p1": 2.72, "c27": 335, "c26": 253, "p2": 2.74, "p3": 2.72, "d27": 432, "d26": 324}, {"n": "경북", "s": false, "m26": 271, "r26": 2.34, "m27": 167, "e": 2.81, "ap": 469, "lo": 2.51, "hi": 3.14, "h": [[2022, 328, 1.76], [2023, 317, 1.97], [2024, 253, 2.08], [2025, 293, 1.81], [2026, 271, 2.34]], "a27": 126, "a26": 108, "b27": 202, "b26": 181, "p1": 3.09, "c27": 264, "c26": 257, "p2": 3.09, "p3": 3.05, "d27": 352, "d26": 376}, {"n": "부산", "s": false, "m26": 255, "r26": 2.29, "m27": 160, "e": 3.34, "ap": 535, "lo": 2.99, "hi": 3.74, "h": [[2022, 343, 2.14], [2023, 324, 2.15], [2024, 305, 2.29], [2025, 379, 2.01], [2026, 255, 2.29]], "a27": 166, "a26": 148, "b27": 284, "b26": 265, "p1": 3.07, "c27": 352, "c26": 345, "p2": 3.07, "p3": 3.05, "d27": 445, "d26": 446}, {"n": "경기", "s": false, "m26": 995, "r26": 2.34, "m27": 815, "e": 3.02, "ap": 2459, "lo": 2.7, "hi": 3.38, "h": [[2022, 1385, 2.04], [2023, 1420, 2.08], [2024, 1224, 2.42], [2025, 1630, 1.93], [2026, 995, 2.34]], "a27": 671, "a26": 580, "b27": 1216, "b26": 1016, "p1": 2.89, "c27": 1604, "c26": 1365, "p2": 2.92, "p3": 2.91, "d27": 1982, "d26": 1770}, {"n": "경남", "s": false, "m26": 123, "r26": 2.36, "m27": 141, "e": 2.67, "ap": 377, "lo": 2.39, "hi": 2.99, "h": [[2022, 156, 2.03], [2023, 138, 2.09], [2024, 164, 2.02], [2025, 169, 1.83], [2026, 123, 2.36]], "a27": 104, "a26": 73, "b27": 178, "b26": 134, "p1": 2.71, "c27": 221, "c26": 165, "p2": 2.7, "p3": 2.7, "d27": 295, "d26": 224}, {"n": "제주", "s": false, "m26": 55, "r26": 2.15, "m27": 24, "e": 3.44, "ap": 83, "lo": 2.92, "hi": 4.06, "h": [[2022, 60, 1.85], [2023, 99, 1.92], [2024, 80, 2.16], [2025, 86, 1.88], [2026, 55, 2.15]], "a27": 15, "a26": 23, "b27": 51, "b26": 55, "p1": 3.02, "c27": 62, "c26": 74, "p2": 3.17, "p3": 3.12, "d27": 71, "d26": 95}, {"n": "충북", "s": false, "m26": 72, "r26": 2.29, "m27": 69, "e": 2.41, "ap": 166, "lo": 2.15, "hi": 2.69, "h": [[2022, 80, 1.88], [2023, 74, 2.12], [2024, 30, 2.03], [2025, 77, 1.56], [2026, 72, 2.29]], "a27": 52, "a26": 44, "b27": 90, "b26": 73, "p1": 2.72, "c27": 129, "c26": 99, "p2": 2.66, "p3": 2.67, "d27": 134, "d26": 142}, {"n": "강원", "s": false, "m26": 119, "r26": 2.22, "m27": 147, "e": 2.26, "ap": 333, "lo": 2.02, "hi": 2.53, "h": [[2022, 95, 2.84], [2023, 86, 2.97], [2024, 69, 4.03], [2025, 103, 2.31], [2026, 119, 2.22]], "a27": 86, "a26": 65, "b27": 136, "b26": 105, "p1": 2.47, "c27": 181, "c26": 143, "p2": 2.47, "p3": 2.46, "d27": 245, "d26": 182}, {"n": "전북", "s": false, "m26": 53, "r26": 2.09, "m27": 47, "e": 2.56, "ap": 121, "lo": 2.29, "hi": 2.87, "h": [[2022, 56, 2.25], [2023, 41, 2.51], [2024, 38, 2.24], [2025, 102, 1.91], [2026, 53, 2.09]], "a27": 28, "a26": 26, "b27": 57, "b26": 37, "p1": 2.53, "c27": 67, "c26": 58, "p2": 2.66, "p3": 2.56, "d27": 95, "d26": 83}], f=x=>x.toFixed(2), $=id=>document.getElementById(id);
 const G=D.filter(d=>!d.s).sort((a,b)=>b.e-a.e), S=D.filter(d=>d.s).sort((a,b)=>b.r26-a.r26);
 let me='서울';
-$('kpis').innerHTML=`<div class="kpi main"><small>2027 전국 예상 경쟁률</small><b>2.95</b><span>2026 전국 2.48</span></div><div class="kpi"><small>2027 전국 모집</small><b>2,549</b><span>2026 2,875명</span></div><div class="kpi"><small>2027 전국 예상 지원자</small><b><em>약</em>7,517</b><span>명 · 전일 예측(7,551명) 대비 <i class=\"dlt\">▼34명</i></span></div>`;
+$('kpis').innerHTML=`<div class="kpi main"><small>2027 전국 예상 경쟁률</small><b>2.88</b><span>80% 범위 2.72~3.05 · 2026 2.48</span></div><div class="kpi"><small>2027 전국 모집</small><b>2,549</b><span>2026 2,875명</span></div><div class="kpi"><small>2027 전국 예상 지원자</small><b><em>약</em>7,339</b><span>명 · 전일 예측(7,517명) 대비 <i class=\"dlt\">▼178명</i></span></div>`;
+const NAT={e:2.88,lo:2.72,hi:3.05,apLo:6935,apHi:7767,ap:7339,mod:2549,cum:5731,p26:1751,r26:2.48,A:2.0,B:3.4};
+(function(){const fm=v=>v.toLocaleString('ko-KR'),n=NAT,now=n.cum/n.mod,q=v=>((Math.min(Math.max(v,n.A),n.B)-n.A)/(n.B-n.A)*100).toFixed(2)+'%',inc=n.ap-n.cum,ratio=inc/n.p26;
+const sc=[0.8,1,1.2].map(r=>({r,v:(n.cum+r*n.p26)/n.mod,m:Math.round(r*n.p26)}));
+$('nat').innerHTML=`<div class="nat-h"><div><small>2027 전국 예상 경쟁률</small><b>${n.e.toFixed(2)}</b></div><div class="r">80% 범위 <b>${n.lo.toFixed(2)}~${n.hi.toFixed(2)}</b><br>예상 지원자 ${fm(n.apLo)}~${fm(n.apHi)}명</div></div>
+<div class="gauge"><div class="g-top"><span style="left:${q(now)}"><small>현재 접수</small>${now.toFixed(2)}</span><span style="left:${q(n.r26)}"><small>2026</small>${n.r26.toFixed(2)}</span></div>
+<div class="g-track"><span class="g-band" style="left:${q(n.lo)};width:calc(${q(n.hi)} - ${q(n.lo)})"></span><span class="g-tick now" style="left:${q(now)}"></span><span class="g-tick" style="left:${q(n.r26)}"></span><span class="g-dot" style="left:${q(n.e)}"></span></div>
+<div class="g-bot"><span class="e0" style="left:0">${n.A.toFixed(1)}</span><span style="left:${q(n.lo)}">${n.lo.toFixed(2)}</span><span class="hl" style="left:${q(n.e)}">${n.e.toFixed(2)}</span><span style="left:${q(n.hi)}">${n.hi.toFixed(2)}</span><span class="e1" style="left:100%">${n.B.toFixed(1)}</span></div></div>
+<div class="legend-inline"><span><i class="i-dot"></i>2027 예상</span><span><i class="i-band"></i>80% 범위</span><span><i class="i-now"></i>접수 현황</span><span><i class="i-prev"></i>2026</span></div>
+<div class="scs">${sc.map(s=>`<div class="sc"><span>마지막 날 접수가 작년의 ${s.r}배면</span><em>${s.v.toFixed(2)}</em><i>+${fm(s.m)}명</i></div>`).join('')}</div>
+<p class="nat-note">예상 <b>${n.e.toFixed(2)}</b>는 마지막 날 약 ${fm(Math.round(inc))}명(작년 마지막 날의 약 ${ratio.toFixed(2)}배)이 더 접수된다고 본 값이에요. 4일차 하루 접수가 작년보다 약 7% 적었던 흐름을 반영했어요. 숫자 하나보다 <b>${n.lo.toFixed(2)}~${n.hi.toFixed(2)}</b> 범위로 읽어 주세요. 이미 접수된 인원만으로 ${now.toFixed(2)}라서 이보다 낮아지진 않아요(접수 취소 제외). 1~3일차 반영 때 예측(2.95~2.96)도 이 범위 안이에요.</p>`})();
 const MIN=1.5,MAX=4.5,p=v=>(Math.min(Math.max(v,MIN),MAX)-MIN)/(MAX-MIN)*100;
-function rng(){km.select(me);$('rng').innerHTML=G.map(d=>`<li data-n="${d.n}" class="${d.n==me?'is-me':''}"><span class="name">${d.n}</span><span class="track"><span class="band" style="left:${p(d.lo)}%;width:${p(d.hi)-p(d.lo)}%"></span><span class="prev" style="left:${p(d.r26)}%"></span><span class="dot" style="left:${p(d.e)}%"></span></span><span class="val">${f(d.e)}</span></li>`).join('');
+const natRow=`<li class="is-nat"><span class="name">전국</span><span class="track"><span class="band" style="left:${p(NAT.lo)}%;width:${p(NAT.hi)-p(NAT.lo)}%"></span><span class="prev" style="left:${p(NAT.r26)}%"></span><span class="dot" style="left:${p(NAT.e)}%"></span></span><span class="val">${f(NAT.e)}</span></li>`;
+function rng(){km.select(me);$('rng').innerHTML=natRow+G.map(d=>`<li data-n="${d.n}" class="${d.n==me?'is-me':''}"><span class="name">${d.n}</span><span class="track"><span class="band" style="left:${p(d.lo)}%;width:${p(d.hi)-p(d.lo)}%"></span><span class="prev" style="left:${p(d.r26)}%"></span><span class="dot" style="left:${p(d.e)}%"></span></span><span class="val">${f(d.e)}</span></li>`).join('');
 $('axis').innerHTML=[1.5,2,2.5,3,3.5,4,4.5].map(v=>`<span>${v}</span>`).join('');
-$('rng').querySelectorAll('li').forEach(li=>li.onclick=()=>{me=li.dataset.n;$('sel').value=me;rng();trend()})}
+$('rng').querySelectorAll('li[data-n]').forEach(li=>li.onclick=()=>{me=li.dataset.n;$('sel').value=me;rng();trend()})}
 $('smalls').innerHTML=S.map(d=>`<div class="sm"><b>${d.n}</b><em>${f(d.e)}</em><span>범위 ${d.lo.toFixed(0)}~${d.hi.toFixed(0)}<br>모집 ${d.m26}→${d.m27}명<br>2026 ${f(d.r26)}</span></div>`).join('');
 $('sel').innerHTML=[...G,...S].map(d=>`<option>${d.n}</option>`).join('');$('sel').value=me;
 $('sel').onchange=e=>{me=e.target.value;rng();trend()};
@@ -251,9 +296,9 @@ s+=`<line x1="${X(2027)}" x2="${X(2027)}" y1="${Y(d.hi)}" y2="${Y(d.lo)}" stroke
 $('trend').innerHTML=s;
 $('chips').innerHTML=`<span>2027 예상 <b>${f(d.e)}</b></span><span>범위 <b>${f(d.lo)}~${f(d.hi)}</b></span><span>모집 <b>${d.m26}→${d.m27}명</b></span><span>예상 지원 <b>${d.ap}명</b></span>`}
 const all=[...G,...S].sort((a,b)=>b.e-a.e);
-$('tbl').innerHTML=`<tr><th>지역</th><th>모집 26→27</th><th>2026</th><th>2027 예상</th><th>변화</th></tr>`+all.map(d=>{const c=d.e-d.r26;return `<tr><td>${d.n}</td><td>${d.m26}→${d.m27}</td><td>${f(d.r26)}</td><td>${f(d.e)}</td><td class="${c>0?'up':'dn'}">${c>0?'▲':'▼'}${Math.abs(c).toFixed(2)}</td></tr>`}).join('')+`<tr class="tot"><td>전국</td><td>2,875→2,549</td><td>2.48</td><td>2.95</td><td class="up">▲0.47</td></tr>`;
-let day=3;
-const fm=v=>v.toLocaleString('ko-KR'),mk=()=>D.map(d=>{const K=day==1?'a':day==2?'b':'c',x=d[K+'27'],y=d[K+'26'];return{n:d.n,m27:d.m27,a27:x,a26:y,g:x/y-1,r1:x/d.m27}});
+$('tbl').innerHTML=`<tr><th>지역</th><th>모집 26→27</th><th>2026</th><th>2027 예상</th><th>변화</th></tr>`+all.map(d=>{const c=d.e-d.r26;return `<tr><td>${d.n}</td><td>${d.m26}→${d.m27}</td><td>${f(d.r26)}</td><td>${f(d.e)}</td><td class="${c>0?'up':'dn'}">${c>0?'▲':'▼'}${Math.abs(c).toFixed(2)}</td></tr>`}).join('')+`<tr class="tot"><td>전국</td><td>2,875→2,549</td><td>2.48</td><td>2.88</td><td class="up">▲0.40</td></tr>`;
+let day=4;
+const fm=v=>v.toLocaleString('ko-KR'),mk=()=>D.map(d=>{const K=day==1?'a':day==2?'b':day==3?'c':'d',x=d[K+'27'],y=d[K+'26'];return{n:d.n,m27:d.m27,a27:x,a26:y,g:x/y-1,r1:x/d.m27}});
 let ROWS=mk(),T1;
 let sk='a27',sd=-1;
 const HD=()=>[['n','지역'],['m27','27 모집'],['a27','27 '+day+'일차'],['a26','26 '+day+'일차'],['g','증감'],['r1',day+'일차 경쟁률']];
@@ -266,16 +311,17 @@ $('d1key').value=sk;document.querySelectorAll('#d1dir button').forEach(b=>b.clas
 $('d1tbl').querySelectorAll('th button').forEach(b=>b.onclick=()=>{const k=b.dataset.k;if(k==sk)sd=-sd;else{sk=k;sd=k=='n'?1:-1}d1()})}
 $('d1key').onchange=e=>{sk=e.target.value;d1()};
 document.querySelectorAll('#dayseg button').forEach(b=>b.onclick=()=>{day=+b.dataset.day;document.querySelectorAll('#dayseg button').forEach(x=>x.classList.toggle('is-on',x==b));d1()});
-const CM=D.map(d=>({n:d.n,p0:d.p1,p:d.p2,e:d.e,c:Math.round((d.e-d.p2)*100)/100})).sort((a,b)=>Math.abs(b.c)-Math.abs(a.c));
-$('cmp').innerHTML='<tr><th>지역</th><th>1일차 반영</th><th>2일차 반영</th><th>3일차 반영</th><th>증감폭</th></tr>'+CM.map(r=>`<tr><td>${r.n}</td><td>${f(r.p0)}</td><td>${f(r.p)}</td><td>${f(r.e)}</td><td class="${r.c>0?'up':r.c<0?'dn':''}">${r.c>0?'▲':r.c<0?'▼':''}${Math.abs(r.c).toFixed(2)}</td></tr>`).join('')+'<tr class="tot"><td>전국</td><td>2.95</td><td>2.96</td><td>2.95</td><td class="dn">▼0.01</td></tr>';
+const CM=D.map(d=>({n:d.n,p0:d.p1,p:d.p2,q:d.p3,e:d.e,c:Math.round((d.e-d.p3)*100)/100})).sort((a,b)=>Math.abs(b.c)-Math.abs(a.c));
+$('cmp').innerHTML='<tr><th>지역</th><th>1일차 반영</th><th>2일차 반영</th><th>3일차 반영</th><th>4일차 반영</th><th>증감폭</th></tr>'+CM.map(r=>`<tr><td>${r.n}</td><td>${f(r.p0)}</td><td>${f(r.p)}</td><td>${f(r.q)}</td><td>${f(r.e)}</td><td class="${r.c>0?'up':r.c<0?'dn':''}">${r.c>0?'▲':r.c<0?'▼':''}${Math.abs(r.c).toFixed(2)}</td></tr>`).join('')+'<tr class="tot"><td>전국</td><td>2.95</td><td>2.96</td><td>2.95</td><td>2.88</td><td class="dn">▼0.07</td></tr>';
 document.querySelectorAll('#d1dir button').forEach(b=>b.onclick=()=>{sd=+b.dataset.d;d1()});
-const km=KMap.mount('#kmap-mount',{initial:me,
+const km=!window.KMap?{select(){}}:KMap.mount('#kmap-mount',{initial:me,
 onSelect:n=>{me=n;$('sel').value=me;rng();trend()},
 render:n=>{const d=D.find(x=>x.n==n),dl=KMap.delta,pc=(a,b)=>{const g=a/b-1;return `<i class="${g>0?'up':'dn'}">${g>0?'▲':'▼'}${Math.abs(g*100).toFixed(0)}%</i>`};
 return KMap.card({title:d.n,badge:d.s?'모집 2~3명 극소 지역':'',
 big:{label:'2027 예상 경쟁률',value:f(d.e),sub:`80% 범위 ${f(d.lo)}~${f(d.hi)}`},
 rows:[['2026 경쟁률',f(d.r26)+' '+dl(d.e-d.r26)],['모집 (26→27)',`${d.m26}→${d.m27}명`],['예상 지원자',`${d.ap}명`],
-['전일 예측 대비',`${f(d.p2)}→${f(d.e)} ${dl(Math.round((d.e-d.p2)*100)/100)}`],
+['전일 예측 대비',`${f(d.p3)}→${f(d.e)} ${dl(Math.round((d.e-d.p3)*100)/100)}`],
+['4일차 누적 지원',`${d.d27}명 <small>(2026 ${d.d26}명 ${pc(d.d27,d.d26)})</small>`],
 ['3일차 누적 지원',`${d.c27}명 <small>(2026 ${d.c26}명 ${pc(d.c27,d.c26)})</small>`],
 ['2일차 누적 지원',`${d.b27}명 <small>(2026 ${d.b26}명 ${pc(d.b27,d.b26)})</small>`],
 ['1일차 지원',`${d.a27}명 <small>(2026 ${d.a26}명 ${pc(d.a27,d.a26)})</small>`]]})}});
