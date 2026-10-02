@@ -1,6 +1,6 @@
 /* hitnote.js — 적중노트 배너 + 헤더 공용 스크립트 (Web Animations API)
  * 페이지 맨 아래에 <script src="hitnote.js"></script> 한 줄이면 돼요.
- *  - 배너 전체는 https://link.inpock.co.kr/tech_imgo 로 새 창(target=_blank)에서 열려요.
+ *  - 배너 전체는 https://techimgo.github.io/tech_imgo/schedule.html 로 새 창(target=_blank)에서 열려요.
  *  - <header> 안에 적중노트 배너(.promo)가 없으면 mock.html과 같은 배너를 만들어 넣고,
  *    이미 있으면(mock.html) 그대로 두고 움직임만 입혀요.
  *  - h1[data-fit-title] : 제목이 한 줄에 딱 맞게 글자 크기를 자동 조절해요.
@@ -41,11 +41,13 @@
   }
 
   /* ---------- 적중노트 배너 ---------- */
-  const PROMO_URL='https://link.inpock.co.kr/tech_imgo';
+  const PROMO_URL='https://techimgo.github.io/tech_imgo/schedule.html';
 
-  /* 배너 전체를 새 창으로 열리는 링크로 감싸요 (이미 링크 안에 있으면 그대로 둬요) */
+  /* 배너 전체를 새 창으로 열리는 링크로 감싸요 (이미 링크 안에 있으면 그 링크 주소를 바꿔요) */
   function linkify(p){
-    if(!p||p.closest('a'))return;
+    if(!p)return;
+    const ex=p.closest('a');
+    if(ex){ex.href=PROMO_URL;ex.target='_blank';ex.rel='noopener noreferrer';return;}
     const a=document.createElement('a');
     a.className='promo-link';a.href=PROMO_URL;a.target='_blank';a.rel='noopener noreferrer';
     a.setAttribute('aria-label','적중노트 안내 페이지 열기 (새 창)');
